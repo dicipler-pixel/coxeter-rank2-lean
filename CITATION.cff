@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use these Lean proofs, please cite them as below."
+title: "Rank-two Coxeter groups: Lean proofs"
+authors:
+  - family-names: "Beasley"
+    given-names: "Jeromie"
+version: 1.0.0
+date-released: 2026-09-27
+license:
+  - MIT
+  - CC-BY-4.0
+repository-code: "https://github.com/dicipler-pixel/coxeter-rank2-lean"
+keywords:
+  - Lean 4
+  - Mathlib
+  - formal verification
+  - Coxeter groups
+  - dihedral groups
+  - reflection groups

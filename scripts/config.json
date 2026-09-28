@@ -1,0 +1,18 @@
+{
+ "modules": [
+  {
+   "module": "RankTwoCertificate",
+   "path": "RankTwoCertificate.lean"
+  },
+  {
+   "module": "DihedralBridge",
+   "path": "DihedralBridge.lean"
+  }
+ ],
+ "expected_theorems": 44,
+ "expected_false_controls": 1,
+ "root_imports": [
+  "RankTwoCertificate",
+  "DihedralBridge"
+ ]
+}
