@@ -22,11 +22,13 @@ Jeromie Beasley
 **1. The dihedral isomorphism.** The canonical homomorphism from Mathlib's presented Coxeter
 group `(CoxeterMatrix.I m).Group` to `DihedralGroup (m + 2)` is surjective, has trivial kernel via
 a two-coset normal form in the presented group, and so is an isomorphism
-(`toDihedral_surjective`, `hasDihedralNormalForm`, `toDihedral_injective`).
+(`toDihedral_surjective`, `hasDihedralNormalForm`, `toDihedral_injective`). The order
+`2(m + 2)` is Mathlib's `DihedralGroup.nat_card` for the target group; it is not restated here.
 
 **2. Finite versus affine in rank two.** With the integral reflections
 `s₁(x, y) = (−x + a y, y)` and `s₂(x, y) = (x, b x − y)`, the crystallographic products
-`ab = 0, 1, 2, 3` give Coxeter elements of exact period `2, 3, 4, 6`; the affine product `ab = 4`,
+`ab = 0, 1, 2, 3`, represented by `(a, b) = (0, 0), (1, 1), (1, 2), (1, 3)`, give Coxeter elements
+of exact period `2, 3, 4, 6`; the affine product `ab = 4`,
 represented by `(2, 2)`, has linear drift and no positive period; and the golden product
 `(3 + √5)/2` of `H₂ = I₂(5)` lies strictly between `2` and `3`, so it is not an integer
 (`U2_exact` … `U6_exact`, `Uaff_iterate`, `Uaff_no_positive_period`,
