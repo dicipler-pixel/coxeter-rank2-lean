@@ -179,3 +179,14 @@ exactly that. My own first sweep "found counterexamples" to the stronger claim I
 - Statements 4–12 have one independent reading, not two (§1).
 - An LLM audit is not a referee. A human algebraist reading `swarm/Statements.lean` against Kac is
   still the standard this falls short of; it is a real independent reading, not the last word.
+
+**How that gap closes, and how it does not.** No human reviewer has been secured, and the agents
+working in this repository cannot secure one: there is no outreach channel, no way to engage or
+pay a reviewer, and the GitHub integration here cannot open issues or post reviews to recruit one.
+What has been prepared instead is [`REVIEW-PACKET.md`](REVIEW-PACKET.md): the five definitions, the
+twelve statements, the specific source to check each against, the one question to answer per
+statement, and what not to bother with — sized for about 30–45 minutes of an algebraist's time.
+A reviewer's answers go in [`review/`](review/) using [`review/TEMPLATE.md`](review/TEMPLATE.md),
+and when one arrives this section and §1 change to say so. Until then the honest description is:
+machine-checked proofs, machine-checked meaning, two model readings on three statements and one on
+the other nine.
