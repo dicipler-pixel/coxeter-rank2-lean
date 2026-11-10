@@ -13,7 +13,9 @@ set_option autoImplicit false
 
 namespace OperatorFirst.CoxeterRankTwo
 
-/-- The rank-two Cartan matrix with off-diagonal magnitudes `a`, `b`. -/
+/-- The rank-two Cartan matrix with off-diagonal magnitudes `a`, `b`. It is a generalised
+Cartan matrix in Kac's sense (`a_ij ≤ 0` for `i ≠ j`, and `a_ij = 0 ⟺ a_ji = 0`) only when
+`a, b ≥ 0` and `a = 0 ⟺ b = 0`; the determinant identity below holds for all `a, b : ℤ`. -/
 def cartan (a b : ℤ) : Matrix (Fin 2) (Fin 2) ℤ := !![2, -a; -b, 2]
 
 /-- The symmetrised Tits form of `cartan a b`, symmetriser `diag b a`. What the targets prove is

@@ -11,14 +11,14 @@ the proofs or the author's review.
   were given the statements, the definitions they use, and the prose, and were told not to open
   `RankTwoClassification.lean`, `swarm/submissions/`, `swarm/RESULT.md` or `.ultramath/`. Each
   report states whether it complied.
-- **How many readers actually reported.** Two passes were run and between them **one** auditor
-  produced a report. The first pass briefed six members on the whole set: five produced nothing,
-  having spent the run contending over who covered which statements (317 duplicate direction
-  registrations), and m5 delivered a full twelve-statement audit. The second pass re-ran four
-  members on **pre-assigned, disjoint** triples to remove the contention; three of the four
-  (m2, m3, m4) ended without writing anything and m1 was still running when this file was
-  written. So: the audit below is one independent reading plus the machine checks in §2 and §3 —
-  not two corroborating readings, and this file does not pretend otherwise.
+- **How many readers actually reported.** Two passes, **two** reports. First pass: six members on
+  the whole set, five produced nothing (317 duplicate direction registrations — they spent the run
+  contending over who covered which statements), and **m5** delivered a full twelve-statement
+  audit. Second pass: four members on pre-assigned disjoint triples, three (m2, m3, m4) ended
+  without writing anything and **m1** delivered an audit of statements 1–3. So statements 1–3 have
+  two independent readings, statements 4–12 have one, and everything below was additionally
+  checked by machine (§2, §3) or against a fetched source (§4). That is the extent of the
+  independence, and this file does not claim more.
 - **Not referees.** These are language models. Nothing below is recorded as *verified* because an
   auditor said it; it is verified because it was checked by machine here, or quoted from a source
   fetched here. Citations that could not be checked are labelled.
@@ -108,14 +108,34 @@ qualifications, each of which the text now reflects:
 | 11 | `tits_negative_above_four` | indefinite type above `ab = 4` | proves negativity at one vector, not indefiniteness |
 | 12 | `golden_product_eq_four_cos_sq` | `4cos²(π/5) = (3+√5)/2`, hence `H₂` is not crystallographic | the arithmetic is proved; the `H₂` and Cartan-product identification is context, not formalized |
 
-## 5a. The second pass
+## 5a. What the second pass added
 
-Recorded because a failed pass is information. Contention was the failure mode both times, and
-pre-assigning triples did not fix it: the direction board still refused 167 registrations, and
-three members burned their run without producing a file. What made the difference in the first
-pass was not the brief but one member finishing and submitting. If this audit is repeated, the
-shape that works is one member per statement, started separately, with the report as the only
-deliverable — not a general instruction to audit "the twelve".
+m1 audited statements 1–3 (`cartan_det`, `finite_exact_period`, `affine_unipotent`) and returned
+**matches** on all three, independently of m5: it verified the charpoly and Cayley–Hamilton by
+sympy for symbolic `a, b`, checked `Mⁿ = I` for `n = 3, 4, 6` on all five pairs with a witness
+against every smaller power, and `(M − I)² = 0` for the three affine representatives. It also
+checked prose that no one else had: the five-pair count, the README's result-2 periods
+`2, 3, 4, 6` for `(0,0), (1,1), (1,2), (1,3)`, and the badge arithmetic `56 = 22 + 22 + 12`.
+
+It found two further defects, both fixed:
+
+- **Stale cross-references.** Rewriting `LIMITATIONS.md` renumbered its bullets, and
+  `swarm/Statements.lean` still pointed at "bullet 2" and "bullet 3" for what are now bullets 3
+  and 4. Numbers rot; the docstring now names the bullet by its content instead.
+- **A claim needing a qualifier.** `cartan a b` is a generalised Cartan matrix in Kac's sense
+  (`a_ij ≤ 0`, `a_ij = 0 ⟺ a_ji = 0`) only for `a, b ≥ 0` with matched zeros; the determinant
+  identity holds for all `a, b : ℤ`. The docstring in `swarm/Targets.lean` and
+  `RankTwoClassification.lean` now says which is which.
+
+One timing caveat, recorded for accuracy: m1 read `swarm/Targets.lean` before the docstring
+correction in §6.2 landed, so its remark that the `titsForm` docstring "is also correct" refers to
+the pre-correction text. Its mathematics is right — the old sentence was true — but the point of
+the correction is that positive semidefiniteness at `ab = 4` and indefiniteness above are true and
+*not proved*, which is a different claim from true.
+
+Contention was the failure mode in both passes: pre-assigning triples did not stop the board
+refusing 167 registrations, and three members burned their run. If this is repeated, the shape
+that works is one member per statement with the report as the only deliverable.
 
 ## 6. What the audit changed in the repository
 
@@ -156,5 +176,6 @@ exactly that. My own first sweep "found counterexamples" to the stronger claim I
   proves it, and `LIMITATIONS.md` says so.
 - Positive semidefiniteness at `ab = 4`, indefiniteness above, and the `H₂` geometry: asserted by
   the literature, not formalized here.
+- Statements 4–12 have one independent reading, not two (§1).
 - An LLM audit is not a referee. A human algebraist reading `swarm/Statements.lean` against Kac is
   still the standard this falls short of; it is a real independent reading, not the last word.

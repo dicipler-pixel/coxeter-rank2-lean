@@ -13,14 +13,14 @@ What each target closes:
 
 * **T1** the Cartan determinant `4 - a*b`;
 * **T2** *every* representative `(a, b)` with `a, b ≥ 1` and `a*b ≤ 3`, not one per
-  product — LIMITATIONS bullet 2;
+  product — see the five-pair bullet in `LIMITATIONS.md`;
 * **T3** the affine side `a*b = 4` for all three representatives, by unipotence rather
   than by one worked example;
 * **T4** the degenerate product `a*b = 0` with a nonzero partner has no positive power equal to
   the identity (`HasExactPeriod` is not claimed, and would be the wrong form here):
   `4 - a*b` alone does not decide finiteness of the product;
 * **T5** the sign of the Tits form — positive definite on the finite side, degenerate at
-  `a*b = 4`, negative somewhere above it — LIMITATIONS bullet 3;
+  `a*b = 4`, negative somewhere above it — see the Tits bullet in `LIMITATIONS.md`;
 * **T6** `4cos²(π/5) = (3+√5)/2`, the identification the golden paragraph only half makes.
 -/
 
