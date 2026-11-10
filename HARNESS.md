@@ -92,6 +92,12 @@ The report records the SHA-256 of the submission, of `Targets.lean`, of `Stateme
 the Lean version, every command with its exit status in `verification/gate.log`, the axiom
 set per theorem, and the false-control outcomes.
 
+## Confirmed on the pin
+
+The first campaign's accepted artifact is `RankTwoClassification.lean`, now in the library. CI
+run 5 on commit `466c1c8` passed under the pinned Lean 4.33.0: build, kernel replay, and the
+axiom audit with the theorem inventory (`expected_theorems` 56) and the false control.
+
 ## Toolchain pin
 
 The repository pins `leanprover/lean4:v4.33.0` with Mathlib `v4.33.0`. This VM's Lean and

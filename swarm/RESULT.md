@@ -73,11 +73,29 @@ period computation rather than shorten it. That is correct, and it is worth reco
 dihedral isomorphism in this repository does not transfer the reflection representation, so
 the period certificates cannot be imported from it.
 
-## Not yet done, deliberately
+## Wired into the library, and confirmed on the pin
 
-`Classification.lean` is not part of the audited library: it is not in `lakefile.toml`'s
-`roots`, not in `scripts/config.json`, and not mentioned in `README.md` or
-`LIMITATIONS.md`. Doing that would change the public theorem count (44 → 56), the badge, and
-what CI checks, and it should be done under the pinned toolchain: the gate ran here under
-Lean 4.33.1 while the repository pins 4.33.0, so a green CI run is the pin-exact
-confirmation, not this report.
+`RankTwoClassification.lean` is now part of the audited library: in `lakefile.toml`'s `roots`,
+in `scripts/config.json` (inventory `56`, axiom audit, false controls), in the README table and
+theorem badge, and in `LIMITATIONS.md`, which now separates what is proved from what is still
+open. `PROVENANCE.md` and `AI_USE.md` say where the proofs came from.
+
+The pin-exact confirmation is the CI workflow, not any local run: the gate here used Lean
+4.33.1 while the repository pins 4.33.0.
+
+```
+run 5  .github/workflows/build.yml  commit 466c1c8  conclusion: success  (3m 48s)
+   Build every module                                        success
+   Replay every module in the independent kernel checker      success
+   Axiom audit, theorem inventory and false controls          success
+```
+
+The inventory step is what makes "56 theorems" a checked number: `scripts/verify.py` fails if
+the count differs from `expected_theorems`, if any theorem's axioms leave
+`{propext, Classical.choice, Quot.sound}`, or if the false control is accepted.
+
+## Still open
+
+Rank ≥ 3, faithfulness of the reflection model to the Coxeter presentation, radical membership
+and positive semidefiniteness of the Tits form at `a*b = 4`, and the `H₂` geometry. See
+[`../LIMITATIONS.md`](../LIMITATIONS.md).
