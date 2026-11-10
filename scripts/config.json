@@ -7,12 +7,17 @@
   {
    "module": "DihedralBridge",
    "path": "DihedralBridge.lean"
+  },
+  {
+   "module": "RankTwoClassification",
+   "path": "RankTwoClassification.lean"
   }
  ],
- "expected_theorems": 44,
+ "expected_theorems": 56,
  "expected_false_controls": 1,
  "root_imports": [
   "RankTwoCertificate",
-  "DihedralBridge"
+  "DihedralBridge",
+  "RankTwoClassification"
  ]
 }

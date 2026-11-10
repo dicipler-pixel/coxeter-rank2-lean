@@ -21,3 +21,12 @@ Mathlib pull request
 11 September 2026 and closed unmerged on 7 October 2026. Its commits and review history remain
 public there. This repository is the maintained home of the result; it is not a Mathlib
 submission.
+
+## `RankTwoClassification.lean`
+
+This module is new work in this repository, not a copy of the private research tree above. It
+was produced by a swarm of agents and accepted only through the mechanical gate in
+`scripts/gate.py` (statement parity, compilation, independent kernel replay, axiom audit, false
+controls); the protocol is `HARNESS.md`, and the frozen statements and accepted submissions are
+kept under `swarm/`. It was checked under Lean 4.33.1 in the development VM; the pin here is
+4.33.0, which is what the CI workflow uses.

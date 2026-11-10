@@ -6,7 +6,7 @@
 
 [![Lean proof check](https://github.com/dicipler-pixel/coxeter-rank2-lean/actions/workflows/build.yml/badge.svg)](https://github.com/dicipler-pixel/coxeter-rank2-lean/actions/workflows/build.yml)
 ![Lean](https://img.shields.io/badge/Lean-v4.33.0-blue)
-![Theorems](https://img.shields.io/badge/theorems-44-2EA043)
+![Theorems](https://img.shields.io/badge/theorems-56-2EA043)
 ![sorry](https://img.shields.io/badge/sorry-0-2EA043)
 ![Code: MIT](https://img.shields.io/badge/code-MIT-lightgrey)
 ![Text: CC BY 4.0](https://img.shields.io/badge/text-CC%20BY%204.0-lightgrey)
@@ -17,7 +17,7 @@ Jeromie Beasley
 
 ---
 
-## The two results
+## The three results
 
 **1. The dihedral isomorphism.** The canonical homomorphism from Mathlib's presented Coxeter
 group `(CoxeterMatrix.I m).Group` to `DihedralGroup (m + 2)` is surjective, has trivial kernel via
@@ -34,11 +34,23 @@ represented by `(2, 2)`, has linear drift and no positive period; and the golden
 (`U2_exact` … `U6_exact`, `Uaff_iterate`, `Uaff_no_positive_period`,
 `golden_product_not_integer`).
 
+**3. The finite/affine boundary, for every representative.** In the integral reflection model of
+`RankTwoCertificate`, every pair with `a, b ≥ 1` and `a*b ≤ 3` has the exact period its finite
+type prescribes (`finite_exact_period`), and every pair with `a*b = 4` is unipotent with linear
+drift and no positive period (`affine_unipotent`, `affine_iterate`, `affine_no_positive_period`).
+A pair with `a*b = 0` and a nonzero partner has infinite order on an explicit vector
+(`zero_product_no_positive_period`) — so `4 − a*b > 0` alone does not make the product finite.
+The symmetrised Tits form of the Cartan matrix is positive definite on the finite side, vanishes
+at `(a, 2)` at `a*b = 4`, and is negative there above (`tits_positive_definite`,
+`tits_vanishes_at_four`, `tits_negative_above_four`). These are statements about the reflection
+model; what they do and do not establish is set out in [`LIMITATIONS.md`](LIMITATIONS.md).
+
 | File | Theorems | What it does |
 | :--- | :-: | :--- |
 | [`RankTwoCertificate.lean`](RankTwoCertificate.lean) | 22 | Integral reflection certificates: exact periods, affine drift, the golden obstruction |
 | [`DihedralBridge.lean`](DihedralBridge.lean) | 22 | The isomorphism `(CoxeterMatrix.I m).Group ≃* DihedralGroup (m + 2)` |
-| | **44** | |
+| [`RankTwoClassification.lean`](RankTwoClassification.lean) | 12 | The finite/affine boundary for every representative, in the integral reflection model |
+| | **56** | |
 
 The theorem is mathematically standard; the contribution is a checked formalization against
 Mathlib's actual `CoxeterMatrix.I` and `DihedralGroup`, a rank-two step toward a

@@ -10,4 +10,4 @@ rev = "v4.33.0"
 # Module names and bytes are kept as first checked (see PROVENANCE.md).
 [[lean_lib]]
 name = "CoxeterRankTwo"
-roots = ["RankTwoCertificate", "DihedralBridge"]
+roots = ["RankTwoCertificate", "DihedralBridge", "RankTwoClassification"]
