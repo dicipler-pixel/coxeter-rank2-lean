@@ -24,6 +24,8 @@ group `(CoxeterMatrix.I m).Group` to `DihedralGroup (m + 2)` is surjective, has 
 a two-coset normal form in the presented group, and so is an isomorphism
 (`toDihedral_surjective`, `hasDihedralNormalForm`, `toDihedral_injective`). The order
 `2(m + 2)` is Mathlib's `DihedralGroup.nat_card` for the target group; it is not restated here.
+A note on naming: Mathlib's `CoxeterMatrix.I m` has off-diagonal entry `m + 2`, so it is
+`I₂(m + 2)` in this notation — Humphreys' `I₂(m)` has order `2m`, the two conventions differ by 2.
 
 **2. Finite versus affine in rank two.** With the integral reflections
 `s₁(x, y) = (−x + a y, y)` and `s₂(x, y) = (x, b x − y)`, the crystallographic products

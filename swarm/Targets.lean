@@ -16,9 +16,11 @@ namespace OperatorFirst.CoxeterRankTwo
 /-- The rank-two Cartan matrix with off-diagonal magnitudes `a`, `b`. -/
 def cartan (a b : ℤ) : Matrix (Fin 2) (Fin 2) ℤ := !![2, -a; -b, 2]
 
-/-- The symmetrised Tits form of `cartan a b`. For positive `a, b` the form is positive
-definite exactly on `0 < a*b < 4`, has a one-dimensional radical at `a*b = 4`, and is
-indefinite above. -/
+/-- The symmetrised Tits form of `cartan a b`, symmetriser `diag b a`. What the targets prove is
+positive definiteness for `1 ≤ a, b` with `a*b ≤ 3`, vanishing at `(a, 2)` for `a*b = 4`, and
+negativity at `(a, 2)` above. That `(a, 2)` spans the radical at `a*b = 4`
+(`B((a,2),(x,y)) = a*y*(4 - a*b)`) and that the form is indefinite above are true but are *not*
+formalized here; `LIMITATIONS.md` says so. -/
 def titsForm (a b : ℤ) (x y : ℝ) : ℝ :=
   2 * b * x ^ 2 - 2 * ((a * b : ℤ) : ℝ) * x * y + 2 * a * y ^ 2
 

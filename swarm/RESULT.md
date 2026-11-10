@@ -60,7 +60,7 @@ Two members submitted after the swarm closed on m1, and the verdict channel refu
 
 | Member | File | Gate | What it is |
 | :--- | :--- | :--- | :--- |
-| m7 | `swarm/submissions/m7.lean` | PASS, 4/12 | **Independent** second proof of the three `zero_*` statements and `tits_positive_definite`: no helper lemma in common with m1 or m2, different route (bound `a,b ≤ 3`, derive `0 < x²+y²`, split the six pairs, close with `sq_nonneg (x - y)`). A real cross-check. |
+| m7 | `swarm/submissions/m7.lean` | PASS, 4/12 | **Independent** second proof of the three `zero_*` statements and `tits_positive_definite`: no helper lemma in common with m1 or m2, different route (bound `a,b ≤ 3`, derive `0 < x²+y²`, split the five pairs, close with `sq_nonneg (x - y)`). A real cross-check. |
 | m8 | `swarm/submissions/m8.lean` | PASS, 8/12 | Integration, as its direction declared: all 15 declarations are m1's and m2's verbatim, including docstrings. Confirms the pieces compose, but is not new mathematics. |
 
 ## What the swarm refused, and why that was right

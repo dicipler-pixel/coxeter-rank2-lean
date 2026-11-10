@@ -10,8 +10,9 @@ The finite/affine boundary of rank-two Coxeter data, proved for **every** repres
 What is proved, and what it is about:
 
 * `finite_exact_period` — for `1 ≤ a, b` with `a*b ≤ 3`, the step has exact period `3`
-  (`a*b = 1`), `4` (`a*b = 2`) or `6` (`a*b = 3`). Since `a*b ≤ 3` leaves six pairs, this is
-  a finite statement about those six, not a general theorem in `a` and `b`.
+  (`a*b = 1`), `4` (`a*b = 2`) or `6` (`a*b = 3`). Since `a*b ≤ 3` leaves five pairs —
+  `(1,1)`, `(1,2)`, `(2,1)`, `(1,3)`, `(3,1)` — this is a finite statement about those five,
+  not a general theorem in `a` and `b`.
 * `affine_unipotent`, `affine_iterate`, `affine_no_positive_period` — for `a*b = 4`, the step
   is unipotent and drifts linearly. These **are** general in `(a, b)`: they follow from the
   characteristic-polynomial identity `step² = (a b - 2) • step - 1`, not from a case split.

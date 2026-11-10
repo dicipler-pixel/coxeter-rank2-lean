@@ -52,7 +52,7 @@ The eight that remain, in rough order of how much they are worth:
 
 1. `finite_exact_period` — T2. For **every** `a, b ≥ 1` with `a*b ≤ 3`, the step has the
    exact period the finite type prescribes (3, 4, 6). This is LIMITATIONS bullet 2 closed.
-   There are six pairs: `(1,1) (1,2) (2,1) (1,3) (3,1)` plus the `a*b = 1` case. Useful
+   There are five pairs: `(1,1)`, `(1,2)`, `(2,1)`, `(1,3)`, `(3,1)`. Useful
    facts: `step a b (x, y) = (-(b*x - y) + a*y, b*x - y)`, so each step is an explicit
    `2×2` integer matrix; its charpoly is `λ² - (ab-2)λ + 1`, so a universal period `n`
    follows from `T^n = 1` and exactness from a witness such as `(1, 0)`.

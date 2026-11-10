@@ -9,10 +9,11 @@ Lean proves exactly the statements written, under exactly the hypotheses written
   reflections generate a Coxeter group, nor that the model is faithful to the Coxeter
   presentation. The dihedral isomorphism is a separate result in `DihedralBridge.lean` and does
   not transfer this representation.
-* `finite_exact_period` quantifies over `1 ≤ a, b` with `a*b ≤ 3`, which leaves six pairs. It is
-  a finite statement about those six, established by case analysis, not a general theorem in
-  `a` and `b`. The affine statements at `a*b = 4` **are** general in `(a, b)`: they follow from
-  the characteristic-polynomial identity `step² = (a*b − 2) • step − 1`.
+* `finite_exact_period` quantifies over `1 ≤ a, b` with `a*b ≤ 3`, which leaves five pairs —
+  `(1,1)`, `(1,2)`, `(2,1)`, `(1,3)`, `(3,1)`. It is a finite statement about those five,
+  established by case analysis, not a general theorem in `a` and `b`. The affine statements at
+  `a*b = 4` **are** general in `(a, b)`: they follow from the characteristic-polynomial identity
+  `step² = (a*b − 2) • step − 1`.
 * `tits_vanishes_at_four` proves that the symmetrised Tits form vanishes at `(a, 2)` when
   `a*b = 4`. That `(a, 2)` spans the radical of the associated bilinear form, that the form is
   positive semidefinite at `a*b = 4`, and that it is indefinite above are not formalized. The

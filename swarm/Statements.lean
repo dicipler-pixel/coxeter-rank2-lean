@@ -16,7 +16,8 @@ What each target closes:
   product — LIMITATIONS bullet 2;
 * **T3** the affine side `a*b = 4` for all three representatives, by unipotence rather
   than by one worked example;
-* **T4** the degenerate product `a*b = 0` with a nonzero partner has no period at all:
+* **T4** the degenerate product `a*b = 0` with a nonzero partner has no positive power equal to
+  the identity (`HasExactPeriod` is not claimed, and would be the wrong form here):
   `4 - a*b` alone does not decide finiteness of the product;
 * **T5** the sign of the Tits form — positive definite on the finite side, degenerate at
   `a*b = 4`, negative somewhere above it — LIMITATIONS bullet 3;
@@ -84,7 +85,8 @@ theorem tits_positive_definite (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : 
     (x y : ℝ) (h : (x, y) ≠ 0) : 0 < titsForm (a : ℤ) (b : ℤ) x y := by
   sorry
 
-/-- Affine side: `(a, 2)` spans the radical at `a*b = 4`. -/
+/-- Affine side: `titsForm a b a 2 = -2 a (a*b - 4)`, so `(a, 2)` is a zero of the form at
+`a*b = 4`. Radical membership is true but is not what this proves; see `Targets.titsForm`. -/
 theorem tits_vanishes_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a * b = 4) :
     titsForm (a : ℤ) (b : ℤ) (a : ℝ) 2 = 0 := by
   sorry
