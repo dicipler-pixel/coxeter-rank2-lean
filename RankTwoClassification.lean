@@ -581,6 +581,15 @@ theorem tits_signature_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : 
   simp only [sigNeg] at hbnd ⊢
   constructor <;> omega
 
+/-- Affine side: the radical is exactly one-dimensional at the boundary, so with `sigPos = 1` and
+`sigNeg = 0` the signature is `(1, 0)` in the strong sense. -/
+theorem tits_radical_finrank_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a * b = 4) :
+    Module.finrank ℝ (QuadraticMap.radical (titsQF (a : ℤ) (b : ℤ))) = 1 := by
+  have h := QuadraticForm.sigPos_add_sigNeg_add_radical (Q := titsQF (a : ℤ) (b : ℤ))
+  rw [Module.finrank_fin_fun ℝ] at h
+  obtain ⟨hp, hn⟩ := tits_signature_at_four a b ha hb hab
+  omega
+
 theorem golden_product_eq_four_cos_sq :
     4 * Real.cos (Real.pi / 5) ^ 2 = (3 + Real.sqrt 5) / 2 := by
   rw [Real.cos_pi_div_five]

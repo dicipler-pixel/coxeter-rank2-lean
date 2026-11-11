@@ -22,9 +22,10 @@ Lean proves exactly the statements written, under exactly the hypotheses written
   `1 ≤ a, b` the trichotomy is an if-and-only-if: positive definite exactly when `a*b ≤ 3`,
   semidefinite exactly when `a*b ≤ 4`, neither above. The signature is computed on all three
   sides in Mathlib's sense: `(2, 0)` below (`tits_signature_below_four`), `(1, 0)` at the boundary
-  (`tits_signature_at_four`), `(1, 1)` above (`tits_signature_above_four`). Not stated separately:
-  that the radical at `a*b = 4` has dimension exactly one — the inertia identity gives it, but it
-  is not a named theorem here.
+  (`tits_signature_at_four`), `(1, 1)` above (`tits_signature_above_four`), and the radical at
+  `a*b = 4` is one-dimensional (`tits_radical_finrank_at_four`). Not stated: that this radical is
+  spanned by `(a, 2)` — the membership is proved and the dimension is proved, but the equality of
+  subspaces is not a named theorem.
 * The golden product is proved to equal `4cos²(π/5)`. That this number is the Cartan product of
   `I₂(5)`, and the full `H₂` geometry, are not formalized.
 * `product_lt_four_cases`, `finite_margin_positive` and `affine_margin_zero` are arithmetic
