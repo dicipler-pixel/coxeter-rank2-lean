@@ -67,6 +67,8 @@ TARGET_DEFS = os.path.join(ROOT, "RankTwoTargets.lean")
 CORE = os.path.join(ROOT, "RankTwoCertificate.lean")
 CONTROLS = os.path.join(ROOT, "swarm", "FalseControls")
 REPORT = os.path.join(VERIFY, "gate-report.json")
+# rebound by --report / --work-dir so parallel runs do not collide
+REPORT_DIR = REPORT
 
 ALLOWED_AXIOMS = {"propext", "Classical.choice", "Quot.sound"}
 NAMESPACE = "OperatorFirst.CoxeterRankTwo"
@@ -250,11 +252,23 @@ def main() -> int:
                         help="accept a submission that covers a subset of the targets")
     parser.add_argument("--strict-pin", action="store_true",
                         help="fail if this VM's Lean differs from the repository pin")
+    parser.add_argument("--work-dir", default=None,
+                        help="scratch directory for this run (default verification/work); give "
+                             "each parallel run its own")
+    parser.add_argument("--report", default=None,
+                        help="where to write the JSON report (default verification/gate-report.json)")
     args = parser.parse_args()
 
     submission = os.path.abspath(args.submission)
     if not os.path.exists(submission):
         raise SystemExit(f"no such file: {submission}")
+
+    global WORK, REPORT_DIR
+    if args.work_dir:
+        WORK = os.path.abspath(args.work_dir)
+        os.makedirs(WORK, exist_ok=True)
+    if args.report:
+        REPORT_DIR = os.path.abspath(args.report)
 
     result = Result()
     report: dict = {"script": "COXETER-RANK2-LEAN-GATE-01", "checks": {}, "submission": {
@@ -382,10 +396,10 @@ def main() -> int:
     if args.strict_pin and not report["environment"].get("pin_match"):
         passed = False
     report["verdict"] = "PASS" if passed else "FAIL"
-    os.makedirs(VERIFY, exist_ok=True)
-    with open(REPORT, "w") as f:
+    os.makedirs(os.path.dirname(REPORT_DIR) or ".", exist_ok=True)
+    with open(REPORT_DIR, "w") as f:
         json.dump(report, f, indent=2, sort_keys=True)
-    with open(os.path.join(VERIFY, "gate.log"), "w") as f:
+    with open(os.path.join(os.path.dirname(REPORT_DIR) or ".", "gate.log"), "w") as f:
         f.write("\n\n".join(result.log))
 
     print(f"verdict: {report['verdict']}")
@@ -403,7 +417,7 @@ def main() -> int:
     env = report["environment"]
     if not env.get("pin_match"):
         print(f"  WARNING: {env.get('warning')}")
-    print(f"report: {os.path.relpath(REPORT, ROOT)}")
+    print(f"report: {os.path.relpath(REPORT_DIR, ROOT)}")
     return 0 if passed else 1
 
 

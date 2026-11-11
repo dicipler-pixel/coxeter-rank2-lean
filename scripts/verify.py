@@ -162,20 +162,44 @@ def check_recorded_submissions() -> dict[str, str]:
         base = run(["lake", "env", "printenv", "LEAN_PATH"]).stdout.strip()
     env = dict(os.environ)
     env["LEAN_PATH"] = base
-    results: dict[str, str] = {}
-    for fname, status, _claim in rows:
-        if status != "gate":
-            results[fname] = "archived"
-            continue
-        path = SUBMISSIONS / fname
+    gated = [(f, c) for f, st, c in rows if st == "gate"]
+    results: dict[str, str] = {f: "archived" for f, st, _ in rows if st != "gate"}
+    if not gated:
+        return results
+
+    work_root = OUT / "submissions"
+    work_root.mkdir(parents=True, exist_ok=True)
+
+    def gate_one(fname: str, idx: int) -> str:
+        wd = work_root / f"w{idx}"
+        rep = work_root / f"r{idx}.json"
         proc = subprocess.run(
             [sys.executable, str(ROOT / "scripts" / "gate.py"),
-             "--submission", str(path), "--partial"],
+             "--submission", str(SUBMISSIONS / fname), "--partial",
+             "--work-dir", str(wd), "--report", str(rep)],
             cwd=ROOT, env=env, capture_output=True, text=True)
-        results[fname] = "pass" if proc.returncode == 0 else "FAIL"
         if proc.returncode != 0:
             raise SystemExit(f"claimed submission failed the gate: {fname}\n"
                              f"{proc.stdout[-3000:]}{proc.stderr[-2000:]}")
+        return "pass"
+
+    # The first gate compiles the shared definitions into verification/build; doing it serially
+    # means the parallel runs after it all hit that cache instead of racing to fill it.
+    results[gated[0][0]] = gate_one(gated[0][0], 0)
+
+    jobs = int(os.environ.get("COXETER_GATE_JOBS") or min(4, os.cpu_count() or 1))
+    jobs = max(1, min(jobs, len(gated) - 1))
+    if jobs == 1 or len(gated) == 1:
+        for i, (fname, _claim) in enumerate(gated[1:], start=1):
+            results[fname] = gate_one(fname, i)
+    else:
+        from concurrent.futures import ThreadPoolExecutor
+        print(f"gating {len(gated)} claimed submissions, {jobs} at a time", flush=True)
+        with ThreadPoolExecutor(max_workers=jobs) as pool:
+            futures = {pool.submit(gate_one, fname, i): fname
+                       for i, (fname, _claim) in enumerate(gated[1:], start=1)}
+            for fut, fname in futures.items():
+                results[fname] = fut.result()
     return results
 
 

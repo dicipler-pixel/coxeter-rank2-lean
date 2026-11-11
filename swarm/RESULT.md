@@ -157,8 +157,16 @@ grows with the number of distinct claimed routes, which is a much slower-growing
 directory.
 
 Before the manifest, every file was re-gated on every push and the run took about 14 minutes at 21
-files; with the manifest it gates 17 and the submission step is about 4 minutes. If the claimed-route
-count itself becomes the bottleneck, the next step is a matrix job, not another filter.
+files; with the manifest it gates 17. The gating is also now parallel inside `verify.py` — the first
+claim runs serially to fill the shared definition cache, the rest run `min(4, cpu_count)` at a time,
+each with its own scratch directory and report file. Measured on four cores: 232 s serial, 131 s with
+two workers, 81 s with four.
+
+A job-level matrix would need a `.github/workflows/build.yml` edit, which this session cannot make —
+the connected GitHub App has no `workflows` permission and such pushes are rejected. The YAML is
+written out in [`CI-MATRIX-JOB.md`](CI-MATRIX-JOB.md) for whoever can apply it, together with the
+reason it is the worse trade: each cell pays its own toolchain and Mathlib cache install, about four
+minutes, against twenty-five seconds of gating.
 
 ## Fourth campaign: order five is impossible, proved five ways
 
