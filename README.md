@@ -85,6 +85,10 @@ lake build
 python3 scripts/verify.py
 ```
 
+What each theorem rests on is recorded in [`swarm/PROVENANCE.md`](swarm/PROVENANCE.md): the
+repository lemmas and Mathlib facts named in its proof term, and the literature it is checked
+against, extracted from the compiled module.
+
 ## Licence, citation and AI use
 
 Copyright (c) 2026 Jeromie Beasley. Code and proofs: [MIT](LICENSE). Written text:

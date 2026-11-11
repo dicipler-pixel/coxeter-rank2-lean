@@ -26,6 +26,11 @@ titsBilin a b u v = 2b·u₁v₁ - ab(u₁v₂ + u₂v₁) + 2a·u₂v₂       
 `HasExactPeriod f n` is "the map `f` has exact period `n`". `titsForm` is the quadratic form of
 `diag(b,a) * cartan a b`.
 
+Where each statement comes from, mechanically: [`PROVENANCE.md`](PROVENANCE.md) lists, for every
+statement, the repository lemmas and Mathlib facts its proof term actually mentions, and the
+literature it is checked against — extracted from the compiled module, so it can be audited against
+the source rather than believed.
+
 Already done, so that you do not have to do it: the twelve propositions are machine-checked and
 replayed in an independent kernel checker on every push, with every axiom audited; `cartan` has
 been identified in Lean with Mathlib's Bourbaki-plate matrices `A 2`, `C 2`, `B 2`, `G₂` and
