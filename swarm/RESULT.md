@@ -99,3 +99,21 @@ the count differs from `expected_theorems`, if any theorem's axioms leave
 Rank ≥ 3, faithfulness of the reflection model to the Coxeter presentation, radical membership
 and positive semidefiniteness of the Tits form at `a*b = 4`, and the `H₂` geometry. See
 [`../LIMITATIONS.md`](../LIMITATIONS.md).
+
+## Second campaign: signature (1,1), proved five ways
+
+`tits_signature_above_four` — above the boundary the Tits form has `sigPos = sigNeg = 1` in
+Mathlib's sense — was proved five times by five different arguments, which is the strongest
+evidence in this repository that a statement is not just true but natural:
+
+| Route | Proved by | Idea |
+| :--- | :--- | :--- |
+| line bounds | coordinator, and independently swarm m4 | `(1,0)` is positive, `(a,2)` negative, so each index is at least 1; each line is also a nonpositive direction for the other index, so each is at most 1 |
+| Sylvester | swarm m5 | the shear `(x,y) ↦ (x − (a/2)y, y)` makes the form a weighted sum of squares with weights `2b` and `a(4−ab)/2`, then `sigPos_of_equiv_weightedSumSquares` counts their signs |
+| inertia identity | swarm m6 | `sigPos + sigNeg + finrank radical = 2` with two lower bounds forces both to be 1 |
+| eigenvalues | swarm m3 | charpoly `λ² − 2(a+b)λ + ab(4−ab)` with `det < 0`, bridged from a spectral decomposition |
+| hyperbolic pair | swarm m1 | `s = √(ab(ab−4))` gives the isotropic vector `(ab+s, 2b)`; reflecting produces `Q(e±) = ±2`, so the form is isometric to weights `(2,−2)` |
+
+The library keeps the coordinator's proof; the other four are in `swarm/submissions/signature-*.lean`,
+each gated with the same axiom set. Together with `tits_signature_below_four` and
+`tits_signature_at_four`, the signature is now `(2,0)`, `(1,0)`, `(1,1)` on the three sides.
