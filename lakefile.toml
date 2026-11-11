@@ -10,4 +10,6 @@ rev = "v4.33.0"
 # Module names and bytes are kept as first checked (see PROVENANCE.md).
 [[lean_lib]]
 name = "CoxeterRankTwo"
-roots = ["RankTwoCertificate", "DihedralBridge", "RankTwoClassification"]
+# RankTwoTargets is imported by RankTwoClassification; Lake builds only modules listed in
+# roots, so an imported-but-unlisted module fails the build with "unknown module prefix".
+roots = ["RankTwoTargets", "RankTwoCertificate", "DihedralBridge", "RankTwoClassification"]
