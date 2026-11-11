@@ -1,0 +1,39 @@
+# Which recorded submissions CI re-gates on every push.
+#
+# Columns: file<TAB>status<TAB>claim
+#   status = gate      -> scripts/verify.py gates this file under the pinned toolchain
+#   status = archived  -> kept for the record, gated when it was accepted, NOT re-gated
+#
+# The rule enforced by scripts/verify.py: every .lean file in this directory must appear here.
+# A file cannot silently leave the checked set, and a claim cannot silently lose its evidence.
+# Archived files duplicate a route already gated by another file (or, for m8, integrate two of
+# them); they are the historical record, not part of the claim.
+
+# --- campaign 1: statements 1-12, the finite/affine boundary ---
+m1.lean	gate	campaign 1: five targets -- finite_exact_period, the affine trio, tits_positive_definite
+m2.lean	gate	campaign 1: the three zero_* targets, by the shear and parity argument
+m6.lean	gate	campaign 1: independent enumeration proof of finite_exact_period
+m7.lean	gate	campaign 1: independent second proof of the zero_* trio and tits_positive_definite
+m8.lean	archived	campaign 1: integration of m1 and m2; RESULT.md records it as not new mathematics
+
+# --- campaign 2: signature (1,1) above the boundary ---
+signature-m4.lean	gate	campaign 2: line bounds
+signature-m5.lean	gate	campaign 2: Sylvester, via an explicit shear
+signature-m6.lean	gate	campaign 2: inertia identity with two lower bounds
+signature-m3.lean	gate	campaign 2: abstract diagonalisation by equivalent_weightedSumSquares
+signature-m1.lean	gate	campaign 2: hyperbolic pair from an isotropic vector
+
+# --- campaign 3: the radical at the boundary ---
+radical-m1.lean	gate	campaign 3: shift identity plus inertia -- the route adopted into the library
+radical-m3.lean	gate	campaign 3: perfect square, radical as the kernel of one functional
+radical-m4.lean	gate	campaign 3: matrix rank and one coordinate equation
+radical-m5.lean	gate	campaign 3: polar pairing against e0
+radical-m2.lean	archived	campaign 3: polar pairing again, same route as radical-m5
+
+# --- campaign 4: order five is impossible ---
+order5-m4.lean	gate	campaign 4: five-fold unfolding, and the Chebyshev recurrence
+order5-m2.lean	gate	campaign 4: collapsing geometric sum with surjectivity and torsion-freeness
+order5-m5.lean	gate	campaign 4: matrix powers of !![ab-1,-a;b,-1]
+order5-m3.lean	gate	campaign 4: modulus 4 -- proves statement 2 outright, statement 1 vacuously
+order5-m1.lean	archived	campaign 4: five-fold unfolding again, as in the library
+order5-m5-vector.lean	archived	campaign 4: matrix-free cross-check of order5-m5

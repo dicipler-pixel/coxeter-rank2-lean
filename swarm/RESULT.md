@@ -135,12 +135,30 @@ source. `swarm/submissions/radical-m*.lean` holds the rest.
 
 ## How the submissions are checked
 
-Until now the swarm files were gated only in the development VM, under Lean 4.33.1 while the
-repository pins 4.33.0 — the gate said so on every run, but the claim "four independent proofs"
-then rested on a check that was not pin-exact. The CI workflow now gates **every** file in
-`swarm/submissions/` under the pinned toolchain (`lake env python3 scripts/gate.py …`), so each
-route recorded here is pin-verified rather than merely reported. That step is what makes the
-tables above evidence rather than notes.
+Each claim in this file is backed by a file under `swarm/submissions/`, and
+[`MANIFEST.tsv`](submissions/MANIFEST.tsv) is what says which file backs which claim. CI gates
+**every manifested claim** in `scripts/verify.py`, under the pinned toolchain, with the pinned
+Mathlib on `LEAN_PATH` — so the tables above are pin-verified rather than reported.
+
+Two properties are enforced, both tested by breaking them deliberately:
+
+* every `.lean` file in the directory must appear in the manifest, as `gate` or `archived`; a new
+  file that nobody classified fails the run rather than quietly going unchecked;
+* every manifest row must name a file that exists, so a claim cannot lose its evidence when a file
+  is renamed or removed.
+
+**What "archived" means, and what it costs.** Four files are archived: `m8.lean` (an integration of
+m1 and m2, which this file already calls not new mathematics), `radical-m2.lean` (the polar-pairing
+route again, as in `radical-m5`), `order5-m1.lean` (five-fold unfolding again, as in the library),
+and `order5-m5-vector.lean` (a matrix-free cross-check of `order5-m5`). They were gated when
+accepted and are kept as the historical record, but they are **not re-gated on every push**. That is
+a real reduction in coverage, and it is the price of not scaling with every file ever added: CI now
+grows with the number of distinct claimed routes, which is a much slower-growing set than the
+directory.
+
+Before the manifest, every file was re-gated on every push and the run took about 14 minutes at 21
+files; with the manifest it gates 17 and the submission step is about 4 minutes. If the claimed-route
+count itself becomes the bottleneck, the next step is a matrix job, not another filter.
 
 ## Fourth campaign: order five is impossible, proved five ways
 

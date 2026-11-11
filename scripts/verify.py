@@ -107,32 +107,74 @@ def check_every_built_module_is_accounted_for() -> None:
 
 
 SUBMISSIONS = ROOT / "swarm" / "submissions"
+MANIFEST = SUBMISSIONS / "MANIFEST.tsv"
+
+
+def read_manifest() -> list[tuple[str, str, str]]:
+    """(file, status, claim) for each row of the submission manifest.
+
+    CI gates what is *claimed*, not every file that happens to be in the directory. A route that
+    was accepted once and is documented here stays gated; a duplicate kept for the record is marked
+    archived. Either way the file is named, so nothing drops out of the account silently.
+    """
+    if not MANIFEST.exists():
+        raise SystemExit(f"missing {MANIFEST.relative_to(ROOT)}: the recorded submissions are not "
+                         f"manifested, so CI cannot know which ones back a published claim")
+    rows: list[tuple[str, str, str]] = []
+    for line in MANIFEST.read_text().splitlines():
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        parts = line.split("\t")
+        if len(parts) < 2:
+            raise SystemExit(f"malformed manifest row: {line!r}")
+        fname, status = parts[0].strip(), parts[1].strip()
+        claim = parts[2].strip() if len(parts) > 2 else ""
+        if status not in ("gate", "archived"):
+            raise SystemExit(f"manifest row {fname}: unknown status {status!r}")
+        rows.append((fname, status, claim))
+    return rows
 
 
 def check_recorded_submissions() -> dict[str, str]:
-    """Gate every recorded swarm submission under the same toolchain as the library.
+    """Gate the manifested claims under the same toolchain as the library.
 
-    `swarm/RESULT.md` claims that several statements were proved by independent routes. Those
-    files were written and gated in a development VM whose Lean was not the pinned one, so until
-    this step runs the claim rests on a check that is not pin-exact. Each file is put through
-    `scripts/gate.py` here, with this process's LEAN_PATH, which in CI is the pinned Mathlib.
+    `swarm/RESULT.md` claims that several statements were proved by independent routes. The files
+    backing those claims are written and gated in a development VM whose Lean is not the pinned
+    one, so each manifested claim is put through `scripts/gate.py` here, with this process's
+    LEAN_PATH, which in CI is the pinned Mathlib. Archived rows are not re-gated; they were gated
+    when accepted and exist as the historical record.
     """
     if not SUBMISSIONS.is_dir():
         return {}
+    rows = read_manifest()
+    on_disk = {p.name for p in SUBMISSIONS.glob("*.lean")}
+    listed = {f for f, _, _ in rows}
+    missing = sorted(listed - on_disk)
+    if missing:
+        raise SystemExit(f"manifest names files that do not exist: {missing}")
+    unaccounted = sorted(on_disk - listed)
+    if unaccounted:
+        raise SystemExit(
+            f"submissions not in {MANIFEST.name}: {unaccounted}. Every recorded file must be listed "
+            f"as `gate` (it backs a claim) or `archived` (kept for the record).")
     base = os.environ.get("LEAN_PATH", "")
     if not base:
         base = run(["lake", "env", "printenv", "LEAN_PATH"]).stdout.strip()
     env = dict(os.environ)
     env["LEAN_PATH"] = base
     results: dict[str, str] = {}
-    for path in sorted(SUBMISSIONS.glob("*.lean")):
+    for fname, status, _claim in rows:
+        if status != "gate":
+            results[fname] = "archived"
+            continue
+        path = SUBMISSIONS / fname
         proc = subprocess.run(
             [sys.executable, str(ROOT / "scripts" / "gate.py"),
              "--submission", str(path), "--partial"],
             cwd=ROOT, env=env, capture_output=True, text=True)
-        results[path.name] = "pass" if proc.returncode == 0 else "FAIL"
+        results[fname] = "pass" if proc.returncode == 0 else "FAIL"
         if proc.returncode != 0:
-            raise SystemExit(f"recorded submission failed the gate: {path.name}\n"
+            raise SystemExit(f"claimed submission failed the gate: {fname}\n"
                              f"{proc.stdout[-3000:]}{proc.stderr[-2000:]}")
     return results
 
