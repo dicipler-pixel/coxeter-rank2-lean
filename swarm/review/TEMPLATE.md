@@ -36,6 +36,8 @@ what your verdict covers.
 | 21 | `tits_signature_at_four` | | | |
 | 22 | `tits_radical_finrank_at_four` | | | |
 | 23 | `tits_radical_eq_span_at_four` | | | |
+| 24 | `order_five_forces_golden_trace` | | | |
+| 25 | `no_integral_period_five` | | | |
 
 ## Anything true but not what it says
 

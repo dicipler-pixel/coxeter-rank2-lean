@@ -6,7 +6,7 @@
 
 [![Lean proof check](https://github.com/dicipler-pixel/coxeter-rank2-lean/actions/workflows/build.yml/badge.svg)](https://github.com/dicipler-pixel/coxeter-rank2-lean/actions/workflows/build.yml)
 ![Lean](https://img.shields.io/badge/Lean-v4.33.0-blue)
-![Theorems](https://img.shields.io/badge/theorems-67-2EA043)
+![Theorems](https://img.shields.io/badge/theorems-69-2EA043)
 ![sorry](https://img.shields.io/badge/sorry-0-2EA043)
 ![Code: MIT](https://img.shields.io/badge/code-MIT-lightgrey)
 ![Text: CC BY 4.0](https://img.shields.io/badge/text-CC%20BY%204.0-lightgrey)
@@ -54,7 +54,13 @@ semidefinite exactly for `a*b ≤ 4`, and neither above. The signature is comput
 Mathlib's own sense: `(2, 0)` below (`tits_signature_below_four`), `(1, 0)` at the boundary
 (`tits_signature_at_four`, with the radical one-dimensional there and spanned by `(a, 2)` —
 `tits_radical_finrank_at_four`, `tits_radical_eq_span_at_four`),
-and `(1, 1)` above (`tits_signature_above_four`) — not merely a positive and a negative value. These are statements about the
+and `(1, 1)` above (`tits_signature_above_four`) — not merely a positive and a negative value.
+
+**Why order five is missing.** The finite orders here are `3, 4, 6`, and `5` never occurs. That is
+not an omission: if the Coxeter element had exact period `5`, then `a*b` would satisfy
+`x² − 3x + 1 = 0`, whose roots are `(3 ± √5)/2` — irrational (`order_five_forces_golden_trace`).
+No integral pair has period five (`no_integral_period_five`), which is why `I₂(5) = H₂` is not a
+crystallographic Coxeter group. These are statements about the
 reflection model; what they do and do not establish is set out in
 [`LIMITATIONS.md`](LIMITATIONS.md).
 
@@ -62,8 +68,8 @@ reflection model; what they do and do not establish is set out in
 | :--- | :-: | :--- |
 | [`RankTwoCertificate.lean`](RankTwoCertificate.lean) | 22 | Integral reflection certificates: exact periods, affine drift, the golden obstruction |
 | [`DihedralBridge.lean`](DihedralBridge.lean) | 22 | The isomorphism `(CoxeterMatrix.I m).Group ≃* DihedralGroup (m + 2)` |
-| [`RankTwoClassification.lean`](RankTwoClassification.lean) | 23 | The finite/affine boundary for every representative, and the Tits-form trichotomy as an if-and-only-if with the signature computed on all three sides |
-| | **67** | |
+| [`RankTwoClassification.lean`](RankTwoClassification.lean) | 25 | The finite/affine boundary for every representative, and the Tits-form trichotomy as an if-and-only-if with the signature computed on all three sides |
+| | **69** | |
 
 The theorem is mathematically standard; the contribution is a checked formalization against
 Mathlib's actual `CoxeterMatrix.I` and `DihedralGroup`, a rank-two step toward a

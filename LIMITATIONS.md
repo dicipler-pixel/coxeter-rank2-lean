@@ -25,6 +25,11 @@ Lean proves exactly the statements written, under exactly the hypotheses written
   (`tits_signature_at_four`), `(1, 1)` above (`tits_signature_above_four`). At `a*b = 4` the
   radical is one-dimensional and spanned by `(a, 2)` (`tits_radical_finrank_at_four`,
   `tits_radical_eq_span_at_four`), so the affine case is corank 1 in the sense Kac uses.
+* **Order five is impossible in this model**, and that is proved rather than observed: exact period
+  `5` forces `a*b` to satisfy `x² − 3x + 1 = 0` (`order_five_forces_golden_trace`), and no integer
+  does (`no_integral_period_five`). This is the arithmetic content of "`H₂` is not
+  crystallographic". It is **not** a formalization of `H₂` itself: the reflection group, its
+  `sin(π/5)` geometry and its Cartan matrix are not defined here.
 * The golden product is proved to equal `4cos²(π/5)`. That this number is the Cartan product of
   `I₂(5)`, and the full `H₂` geometry, are not formalized.
 * `product_lt_four_cases`, `finite_margin_positive` and `affine_margin_zero` are arithmetic

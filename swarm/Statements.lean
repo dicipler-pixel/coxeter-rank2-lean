@@ -168,4 +168,20 @@ theorem golden_product_eq_four_cos_sq :
     4 * Real.cos (Real.pi / 5) ^ 2 = (3 + Real.sqrt 5) / 2 := by
   sorry
 
+
+/-- **`H₂` is not crystallographic, as a statement about the model.** If the Coxeter element has
+exact period `5`, then `a * b` satisfies `x² - 3x + 1 = 0`, whose roots are `(3 ± √5)/2` — the
+golden number and its conjugate. So no integral pair has period five, which is why the reflection
+group `I₂(5) = H₂` needs `sin(π/5)` and is not a crystallographic Coxeter group. -/
+theorem order_five_forces_golden_trace (a b : ℕ)
+    (h : HasExactPeriod (step (a : ℤ) (b : ℤ)) 5) :
+    ((a * b : ℕ) : ℤ) ^ 2 - 3 * ((a * b : ℕ) : ℤ) + 1 = 0 := by
+  sorry
+
+/-- No integral representative has exact period five: the finite/affine trichotomy of this library
+runs over `a*b ∈ {1,2,3,4}`, and the missing order is `5`. -/
+theorem no_integral_period_five (a b : ℕ) :
+    ¬ HasExactPeriod (step (a : ℤ) (b : ℤ)) 5 := by
+  sorry
+
 end OperatorFirst.CoxeterRankTwo

@@ -631,6 +631,98 @@ theorem tits_radical_eq_span_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (
   exact (Submodule.eq_of_le_of_finrank_eq hle (by rw [h1, h2])).symm
 
 
+lemma iter_five (a b : ℤ) (v : V) :
+    iter (step a b) 5 v
+      = (((a * b - 2) ^ 4 - 3 * (a * b - 2) ^ 2 + 1)) • step a b v
+        - (((a * b - 2) ^ 3 - 2 * (a * b - 2))) • v := by
+  have h1 := step_sq_char a b v
+  have h2 := step_sq_char a b (step a b v)
+  have h3 := step_sq_char a b (step a b (step a b v))
+  have h4 := step_sq_char a b (step a b (step a b (step a b v)))
+  simp only [iter]
+  rw [h4, h3, h2, h1]
+  module
+
+/-- the Coxeter element at `(1,0)` and `(0,1)` -/
+lemma step_one_zero (a b : ℤ) : step a b (1, 0) = (a * b - 1, b) := by
+  simp [step, s1, s2]
+  ring_nf
+
+lemma step_zero_one (a b : ℤ) : step a b (0, 1) = (-a, -1) := by
+  simp [step, s1, s2]
+
+lemma step_zero_zero_neg (v : V) : step (0 : ℤ) 0 v = -v := by
+  obtain ⟨x, y⟩ := v
+  simp [step, s1, s2]
+
+theorem order_five_forces_golden_trace (a b : ℕ)
+    (h : HasExactPeriod (step (a : ℤ) (b : ℤ)) 5) :
+    ((a * b : ℕ) : ℤ) ^ 2 - 3 * ((a * b : ℕ) : ℤ) + 1 = 0 := by
+  obtain ⟨hper, hexact⟩ := h
+  -- the two-term relation from the period
+  have key : ∀ v : V, ((((a : ℤ) * (b : ℤ) - 2) ^ 4 - 3 * ((a : ℤ) * (b : ℤ) - 2) ^ 2 + 1))
+        • (step (a : ℤ) (b : ℤ) v)
+      = ((((a : ℤ) * (b : ℤ) - 2) ^ 3 - 2 * ((a : ℤ) * (b : ℤ) - 2) + 1)) • v := by
+    intro v
+    have h5 := iter_five (a : ℤ) (b : ℤ) v
+    have hp := hper v
+    rw [hp] at h5
+    linear_combination (-1 : ℤ) * h5
+  -- evaluate on the two basis vectors
+  have hB : (((a : ℤ) * (b : ℤ) - 2) ^ 4 - 3 * ((a : ℤ) * (b : ℤ) - 2) ^ 2 + 1) * ((b : ℤ)) = 0 := by
+    have := congrArg Prod.snd (key (1, 0))
+    simp only [step_one_zero, Prod.smul_snd, Prod.mk.eta] at this
+    simpa using this
+  have hA : (((a : ℤ) * (b : ℤ) - 2) ^ 4 - 3 * ((a : ℤ) * (b : ℤ) - 2) ^ 2 + 1) * ((a : ℤ)) = 0 := by
+    have := congrArg Prod.fst (key (0, 1))
+    simp only [step_zero_one, Prod.smul_fst] at this
+    simpa using this
+  have hc : ((a : ℤ) * (b : ℤ) - 2) ^ 4 - 3 * ((a : ℤ) * (b : ℤ) - 2) ^ 2 + 1 = 0 := by
+    rcases eq_or_ne (b : ℤ) 0 with hb0 | hb0
+    · rcases eq_or_ne (a : ℤ) 0 with ha0 | ha0
+      · exfalso
+        have hstep : step (a : ℤ) (b : ℤ) = step (0 : ℤ) 0 := by rw [ha0, hb0]
+        obtain ⟨v, hv⟩ := hexact 2 (by norm_num) (by norm_num)
+        apply hv
+        simp only [hstep]
+        simp [iter, step_zero_zero_neg]
+      · exact (mul_eq_zero.mp hA).resolve_right ha0
+    · exact (mul_eq_zero.mp hB).resolve_right hb0
+  -- and the trace relation itself
+  have h3 : ((a : ℤ) * (b : ℤ) - 2) ^ 3 - 2 * ((a : ℤ) * (b : ℤ) - 2) + 1 = 0 := by
+    have := congrArg Prod.fst (key (1, 0))
+    rw [step_one_zero] at this
+    simp only [Prod.smul_fst] at this
+    rw [hc] at this
+    simpa using this.symm
+  have h2 : ((a : ℤ) * (b : ℤ) - 2) ^ 2 + ((a : ℤ) * (b : ℤ) - 2) - 1 = 0 := by
+    have hid : (((a : ℤ) * (b : ℤ) - 2) ^ 4 - 3 * ((a : ℤ) * (b : ℤ) - 2) ^ 2 + 1)
+        - ((a : ℤ) * (b : ℤ) - 2) * (((a : ℤ) * (b : ℤ) - 2) ^ 3
+            - 2 * ((a : ℤ) * (b : ℤ) - 2) + 1)
+        = -(((a : ℤ) * (b : ℤ) - 2) ^ 2 + ((a : ℤ) * (b : ℤ) - 2) - 1) := by ring
+    rw [hc, h3] at hid
+    linarith
+  have : ((a : ℤ) * (b : ℤ)) ^ 2 - 3 * ((a : ℤ) * (b : ℤ)) + 1 = 0 := by
+    have hsub : ((a : ℤ) * (b : ℤ) - 2) ^ 2 + ((a : ℤ) * (b : ℤ) - 2) - 1
+        = ((a : ℤ) * (b : ℤ)) ^ 2 - 3 * ((a : ℤ) * (b : ℤ)) + 1 := by ring
+    rw [hsub] at h2
+    exact h2
+  calc ((a * b : ℕ) : ℤ) ^ 2 - 3 * ((a * b : ℕ) : ℤ) + 1
+      = ((a : ℤ) * (b : ℤ)) ^ 2 - 3 * ((a : ℤ) * (b : ℤ)) + 1 := by push_cast; ring
+    _ = 0 := this
+
+theorem no_integral_period_five (a b : ℕ) :
+    ¬ HasExactPeriod (step (a : ℤ) (b : ℤ)) 5 := by
+  intro h
+  have h1 := order_five_forces_golden_trace a b h
+  have h2 : ∀ x : ZMod 2, x ^ 2 - 3 * x + 1 ≠ 0 := by
+    decide
+  have hc : ((((a * b : ℕ) : ℤ)) : ZMod 2) ^ 2 - 3 * ((((a * b : ℕ) : ℤ)) : ZMod 2) + 1 = 0 := by
+    have := congrArg (fun z : ℤ => (z : ZMod 2)) h1
+    push_cast at this ⊢
+    simpa using this
+  exact h2 _ hc
+
 theorem golden_product_eq_four_cos_sq :
     4 * Real.cos (Real.pi / 5) ^ 2 = (3 + Real.sqrt 5) / 2 := by
   rw [Real.cos_pi_div_five]
