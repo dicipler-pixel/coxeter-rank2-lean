@@ -22,8 +22,8 @@ What each target closes:
 * **T5** the sign of the Tits form — positive definite for `1 ≤ a, b` with `a*b ≤ 3` (at
   `(0, 0)` the symmetriser degenerates and the form is identically zero), nonnegative at
   `a*b = 4` with `(a, 2)` in the radical of the bilinear form (so degenerate), and taking both
-  signs above — and the converses hold, so the trichotomy is an if-and-only-if — see the Tits
-  bullet in `LIMITATIONS.md`;
+  signs above — and the converses hold, so the trichotomy is an if-and-only-if, with signature
+  `(1, 1)` above the boundary — see the Tits bullet in `LIMITATIONS.md`;
 * **T6** `4cos²(π/5) = (3+√5)/2`, the identification the golden paragraph only half makes.
 -/
 
@@ -124,6 +124,12 @@ theorem tits_posDef_iff_le_three (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) :
 /-- The affine side is exactly nonnegativity: semidefinite if and only if `a*b ≤ 4`. -/
 theorem tits_semidef_iff_le_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) :
     (∀ x y : ℝ, 0 ≤ titsForm (a : ℤ) (b : ℤ) x y) ↔ a * b ≤ 4 := by
+  sorry
+
+/-- Indefinite side, as a signature statement rather than a pair of witnesses: above the boundary
+the form has signature `(1, 1)` — one positive and one negative dimension. -/
+theorem tits_signature_above_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : 4 < a * b) :
+    sigPos (titsQF (a : ℤ) (b : ℤ)) = 1 ∧ sigNeg (titsQF (a : ℤ) (b : ℤ)) = 1 := by
   sorry
 
 /-- Indefinite side: above the boundary the form takes both signs, so it is indefinite. -/

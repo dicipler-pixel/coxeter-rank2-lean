@@ -397,6 +397,87 @@ theorem tits_semidef_iff_le_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) :
     · exact le_of_lt (tits_positive_definite a b ha hb h3 x y hne)
   · exact tits_semidefinite_at_four a b ha hb heq x y
 
+open scoped Classical in
+theorem tits_signature_above_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : 4 < a * b) :
+    sigPos (titsQF (a : ℤ) (b : ℤ)) = 1 ∧ sigNeg (titsQF (a : ℤ) (b : ℤ)) = 1 := by
+  have hne : titsForm (a : ℤ) (b : ℤ) (a : ℝ) 2 < 0 := tits_negative_above_four a b ha hb hab
+  set Q : QuadraticForm ℝ (Fin 2 → ℝ) := titsQF (a : ℤ) (b : ℤ) with hQdef
+  set e : Fin 2 → ℝ := ![1, 0] with he
+  set w : Fin 2 → ℝ := ![(a : ℝ), 2] with hw
+  have hQe : Q e = 2 * (b : ℝ) := by
+    rw [hQdef]; simp [he, titsQF_apply, titsForm]
+  have hQw : Q w < 0 := by
+    rw [hQdef]; simpa [hw, titsQF_apply] using hne
+  have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast (by omega : 0 < b)
+  have haR : (0 : ℝ) < (a : ℝ) := by exact_mod_cast (by omega : 0 < a)
+  have he_ne : e ≠ 0 := by
+    intro h; have : e 0 = 0 := by rw [h]; simp
+    simp [he] at this
+  have hw_ne : w ≠ 0 := by
+    intro h; have : w 0 = 0 := by rw [h]; simp
+    simp [hw] at this; linarith
+  -- the two lines
+  have hfr_e : Module.finrank ℝ ↥(ℝ ∙ e) = 1 := finrank_span_singleton he_ne
+  have hfr_w : Module.finrank ℝ ↥(ℝ ∙ w) = 1 := finrank_span_singleton hw_ne
+  have hfr_top : Module.finrank ℝ (Fin 2 → ℝ) = 2 := Module.finrank_fin_fun ℝ
+  -- Q ≤ 0 on the line through w
+  have hnonpos_w : ∀ x ∈ (ℝ ∙ w : Submodule ℝ (Fin 2 → ℝ)), Q x ≤ 0 := by
+    intro x hx
+    obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.mp hx
+    rw [QuadraticMap.map_smul]
+    have : (c * c) * Q w ≤ 0 := by nlinarith [mul_self_nonneg c]
+    simpa [smul_eq_mul] using this
+  -- -Q ≤ 0 on the line through e, i.e. Q ≥ 0 there
+  have hnonpos_e : ∀ x ∈ (ℝ ∙ e : Submodule ℝ (Fin 2 → ℝ)), (-Q) x ≤ 0 := by
+    intro x hx
+    obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.mp hx
+    rw [← hc, QuadraticMap.map_smul]
+    simp only [neg_apply, smul_eq_mul, hQe]
+    nlinarith [mul_self_nonneg c, hbR]
+  -- positive definiteness on the line through e
+  have hposDef_e : (QuadraticMap.restrict Q (ℝ ∙ e)).PosDef := by
+    intro x hx
+    rw [QuadraticMap.restrict_apply]
+    have hxmem : (x : Fin 2 → ℝ) ∈ (ℝ ∙ e : Submodule ℝ (Fin 2 → ℝ)) := x.2
+    obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.mp hxmem
+    have hc0 : c ≠ 0 := by
+      intro h0
+      apply hx
+      ext
+      rw [← hc, h0, zero_smul]
+      rfl
+    rw [← hc, QuadraticMap.map_smul, hQe]
+    simp only [smul_eq_mul]
+    have hcc : 0 < c * c := mul_self_pos.mpr hc0
+    nlinarith [hbR]
+  -- positive definiteness of -Q on the line through w
+  have hposDef_w : (QuadraticMap.restrict (-Q) (ℝ ∙ w)).PosDef := by
+    intro x hx
+    rw [QuadraticMap.restrict_apply]
+    have hxmem : (x : Fin 2 → ℝ) ∈ (ℝ ∙ w : Submodule ℝ (Fin 2 → ℝ)) := x.2
+    obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.mp hxmem
+    have hc0 : c ≠ 0 := by
+      intro h0
+      apply hx
+      ext
+      rw [← hc, h0, zero_smul]
+      rfl
+    rw [← hc, QuadraticMap.map_smul]
+    simp only [QuadraticMap.neg_apply, smul_eq_mul]
+    have hcc : 0 < c * c := mul_self_pos.mpr hc0
+    nlinarith [hQw, hcc]
+  have hpos_ub := QuadraticForm.sigPos_add_finrank_le_of_nonpos (Q := Q) hnonpos_w
+  have hpos_lb := le_sigPos_of_posDef Q hposDef_e
+  have hneg_ub := QuadraticForm.sigPos_add_finrank_le_of_nonpos (Q := -Q) hnonpos_e
+  have hneg_lb := le_sigNeg_of_negDef Q hposDef_w
+  rw [hfr_e] at hpos_lb
+  rw [hfr_w] at hpos_ub
+  rw [hfr_w] at hneg_lb
+  rw [hfr_e] at hneg_ub
+  rw [hfr_top] at hpos_ub hneg_ub
+  simp only [sigNeg] at hneg_lb hneg_ub ⊢
+  constructor <;> omega
+
 theorem golden_product_eq_four_cos_sq :
     4 * Real.cos (Real.pi / 5) ^ 2 = (3 + Real.sqrt 5) / 2 := by
   rw [Real.cos_pi_div_five]

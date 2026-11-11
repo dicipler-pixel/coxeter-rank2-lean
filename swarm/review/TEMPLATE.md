@@ -31,6 +31,7 @@ what your verdict covers.
 | 16 | `tits_degenerate_at_four` | | | |
 | 17 | `tits_posDef_iff_le_three` | | | |
 | 18 | `tits_semidef_iff_le_four` | | | |
+| 19 | `tits_signature_above_four` | | | |
 
 ## Anything true but not what it says
 

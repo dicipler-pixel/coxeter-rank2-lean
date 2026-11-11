@@ -1,4 +1,5 @@
 import Mathlib
+import Mathlib.LinearAlgebra.QuadraticForm.Signature
 
 /-!
 # The objects the rank-two statements are about
@@ -44,5 +45,21 @@ def titsForm (a b : ℤ) (x y : ℝ) : ℝ :=
 degeneracy statement: at `a * b = 4` its value at `((a, 2), (x, y))` is `a y (4 - a b)`. -/
 def titsBilin (a b : ℤ) (u v : ℝ × ℝ) : ℝ :=
   2 * b * u.1 * v.1 - ((a * b : ℤ) : ℝ) * (u.1 * v.2 + u.2 * v.1) + 2 * a * u.2 * v.2
+
+/-- `titsForm` as a genuine `QuadraticForm` on `ℝ²`, so that Mathlib's signature theory applies:
+the matrix `!![2b, -ab; -ab, 2a]` sent through `Matrix.toQuadraticForm'`. -/
+noncomputable def titsQF (a b : ℤ) : QuadraticForm ℝ (Fin 2 → ℝ) :=
+  (!![2 * (b : ℝ), -((a : ℝ) * (b : ℝ)); -((a : ℝ) * (b : ℝ)), 2 * (a : ℝ)] :
+    Matrix (Fin 2) (Fin 2) ℝ).toQuadraticForm'
+
+/-- The `QuadraticForm` and the packaged form agree. -/
+@[simp] lemma titsQF_apply (a b : ℤ) (v : Fin 2 → ℝ) :
+    titsQF a b v = titsForm a b (v 0) (v 1) := by
+  simp only [titsQF, titsForm, Matrix.toQuadraticForm', LinearMap.BilinMap.toQuadraticMap_apply,
+    Matrix.toLinearMap₂'_apply, dotProduct, Matrix.mulVec, Fin.sum_univ_two, Fin.isValue,
+    Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.head_fin_const, Matrix.cons_val_fin_one, Matrix.cons_val']
+  push_cast
+  ring
 
 end OperatorFirst.CoxeterRankTwo

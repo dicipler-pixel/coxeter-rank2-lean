@@ -20,7 +20,10 @@ Lean proves exactly the statements written, under exactly the hypotheses written
   (`tits_degenerate_at_four`), and taking both signs above (`tits_indefinite_above_four`). The
   converses are proved too (`tits_posDef_iff_le_three`, `tits_semidef_iff_le_four`), so for
   `1 ≤ a, b` the trichotomy is an if-and-only-if: positive definite exactly when `a*b ≤ 3`,
-  semidefinite exactly when `a*b ≤ 4`, neither above.
+  semidefinite exactly when `a*b ≤ 4`, neither above. Above the boundary the signature is `(1, 1)`
+  in Mathlib's sense, `sigPos = sigNeg = 1` (`tits_signature_above_four`). Not formalized: the
+  signature on the other two sides — `(2, 0)` below and `(1, 0)` with a 1-dimensional radical at
+  `a*b = 4` — is not stated separately.
 * The golden product is proved to equal `4cos²(π/5)`. That this number is the Cartan product of
   `I₂(5)`, and the full `H₂` geometry, are not formalized.
 * `product_lt_four_cases`, `finite_margin_positive` and `affine_margin_zero` are arithmetic

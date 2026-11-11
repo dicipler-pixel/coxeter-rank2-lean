@@ -1,7 +1,7 @@
 # Reviewer packet: twelve statements, checked against the literature
 
 For an algebraist who has not worked on this repository. Time: about 30–45 minutes for the twelve
-statements of the first campaign, 50–70 for all eighteen. You are not
+statements of the first campaign, 55–75 for all nineteen. You are not
 asked to read proofs or to know Lean. You are asked one thing: **does each statement say the
 standard mathematical fact its name and docstring claim, under the hypotheses written?**
 
@@ -57,6 +57,7 @@ The Lean statements are in `swarm/Statements.lean`; they are reproduced in plain
 | 16 | `tits_degenerate_at_four` | at `a·b = 4`: `∃ v ≠ 0, ∀ w, B v w = 0` | Kac Ch. 4 | Is this the standard statement that the form is degenerate, and does it need corank exactly 1 stated separately? |
 | 17 | `tits_posDef_iff_le_three` | the form is positive off the origin iff `a·b ≤ 3` | Kac Ch. 4, the principal-minor criterion | This is the converse that makes the criterion an iff. Does proving it from the two excluded cases (`a·b = 4` and above) carry the same content as Kac's principal-minor argument? |
 | 18 | `tits_semidef_iff_le_four` | the form is nonnegative everywhere iff `a·b ≤ 4` | Kac Ch. 4 | Same question for the affine bound. |
+| 19 | `tits_signature_above_four` | at `a·b > 4`: `sigPos = 1` and `sigNeg = 1` for the quadratic form, in Mathlib's sense | Kac Ch. 4 (indefinite type, signature `(1,1)` in rank two) | Is Mathlib's `sigPos`/`sigNeg` (maximal dimensions of positive/negative definite subspaces) the right formalisation of Kac's signature, and are the two lines through `(1,0)` and `(a,2)` enough to pin both indices? |
 
 ## What to send back
 
