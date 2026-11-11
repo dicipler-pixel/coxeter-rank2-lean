@@ -13,7 +13,7 @@
    "path": "RankTwoClassification.lean"
   }
  ],
- "expected_theorems": 63,
+ "expected_theorems": 65,
  "expected_false_controls": 1,
  "root_imports": [
   "RankTwoCertificate",

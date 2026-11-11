@@ -128,6 +128,19 @@ theorem tits_semidef_iff_le_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) :
 
 /-- Indefinite side, as a signature statement rather than a pair of witnesses: above the boundary
 the form has signature `(1, 1)` — one positive and one negative dimension. -/
+
+/-- Finite side, as a signature statement: below the boundary the form is positive definite on the
+whole plane, so `sigPos = 2` and `sigNeg = 0`. -/
+theorem tits_signature_below_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a * b ≤ 3) :
+    sigPos (titsQF (a : ℤ) (b : ℤ)) = 2 ∧ sigNeg (titsQF (a : ℤ) (b : ℤ)) = 0 := by
+  sorry
+
+/-- Affine side, as a signature statement: at the boundary the form is semidefinite with a
+one-dimensional radical, so `sigPos = 1` and `sigNeg = 0`. -/
+theorem tits_signature_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a * b = 4) :
+    sigPos (titsQF (a : ℤ) (b : ℤ)) = 1 ∧ sigNeg (titsQF (a : ℤ) (b : ℤ)) = 0 := by
+  sorry
+
 theorem tits_signature_above_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : 4 < a * b) :
     sigPos (titsQF (a : ℤ) (b : ℤ)) = 1 ∧ sigNeg (titsQF (a : ℤ) (b : ℤ)) = 1 := by
   sorry

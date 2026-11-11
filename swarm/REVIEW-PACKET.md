@@ -1,7 +1,7 @@
 # Reviewer packet: twelve statements, checked against the literature
 
 For an algebraist who has not worked on this repository. Time: about 30–45 minutes for the twelve
-statements of the first campaign, 55–75 for all nineteen. You are not
+statements of the first campaign, 60–80 for all twenty-one. You are not
 asked to read proofs or to know Lean. You are asked one thing: **does each statement say the
 standard mathematical fact its name and docstring claim, under the hypotheses written?**
 
@@ -58,6 +58,8 @@ The Lean statements are in `swarm/Statements.lean`; they are reproduced in plain
 | 17 | `tits_posDef_iff_le_three` | the form is positive off the origin iff `a·b ≤ 3` | Kac Ch. 4, the principal-minor criterion | This is the converse that makes the criterion an iff. Does proving it from the two excluded cases (`a·b = 4` and above) carry the same content as Kac's principal-minor argument? |
 | 18 | `tits_semidef_iff_le_four` | the form is nonnegative everywhere iff `a·b ≤ 4` | Kac Ch. 4 | Same question for the affine bound. |
 | 19 | `tits_signature_above_four` | at `a·b > 4`: `sigPos = 1` and `sigNeg = 1` for the quadratic form, in Mathlib's sense | Kac Ch. 4 (indefinite type, signature `(1,1)` in rank two) | Is Mathlib's `sigPos`/`sigNeg` (maximal dimensions of positive/negative definite subspaces) the right formalisation of Kac's signature, and are the two lines through `(1,0)` and `(a,2)` enough to pin both indices? |
+| 20 | `tits_signature_below_four` | at `a·b ≤ 3`: `sigPos = 2`, `sigNeg = 0` | Kac Ch. 4 (finite type) | Same formalisation question for the definite case. |
+| 21 | `tits_signature_at_four` | at `a·b = 4`: `sigPos = 1`, `sigNeg = 0` | Kac Ch. 4 (affine type) | Is the pair of indices enough to say "signature `(1,0)` with a one-dimensional radical", or does the radical dimension need stating separately? |
 
 ## What to send back
 

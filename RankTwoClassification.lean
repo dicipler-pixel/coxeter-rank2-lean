@@ -478,6 +478,109 @@ theorem tits_signature_above_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab
   simp only [sigNeg] at hneg_lb hneg_ub ⊢
   constructor <;> omega
 
+private lemma pair_ne_zero_of_ne_zero {v : Fin 2 → ℝ} (hv : v ≠ 0) : (v 0, v 1) ≠ 0 := by
+  intro h
+  apply hv
+  funext i
+  refine Fin.cases ?_ ?_ i
+  · simpa using congrArg Prod.fst h
+  · intro j
+    refine Fin.cases ?_ ?_ j
+    · simpa using congrArg Prod.snd h
+    · intro k
+      exact absurd k.isLt (by omega)
+
+private lemma posDef_on_top_iff (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a * b ≤ 3) :
+    (QuadraticMap.restrict (titsQF (a : ℤ) (b : ℤ)) ⊤).PosDef := by
+  intro v hv
+  rw [QuadraticMap.restrict_apply]
+  have hv' : (v : Fin 2 → ℝ) ≠ 0 := fun h => hv (Subtype.ext h)
+  have hpair : ((v : Fin 2 → ℝ) 0, (v : Fin 2 → ℝ) 1) ≠ 0 := pair_ne_zero_of_ne_zero hv'
+  simpa [titsQF_apply] using tits_positive_definite a b ha hb hab _ _ hpair
+
+theorem tits_signature_below_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a * b ≤ 3) :
+    sigPos (titsQF (a : ℤ) (b : ℤ)) = 2 ∧ sigNeg (titsQF (a : ℤ) (b : ℤ)) = 0 := by
+  set Q : QuadraticForm ℝ (Fin 2 → ℝ) := titsQF (a : ℤ) (b : ℤ) with hQ
+  have hfr : Module.finrank ℝ (Fin 2 → ℝ) = 2 := Module.finrank_fin_fun ℝ
+  have htop : Module.finrank ℝ ↥(⊤ : Submodule ℝ (Fin 2 → ℝ)) = 2 := by
+    rw [finrank_top]; exact hfr
+  have hpd := posDef_on_top_iff a b ha hb hab
+  have hlb := le_sigPos_of_posDef Q hpd
+  rw [htop] at hlb
+  have hub := sigPos_le_finrank Q
+  rw [hfr] at hub
+  have hQ0 : Q 0 = 0 := by rw [hQ]; simp [titsQF_apply, titsForm]
+  have hgeom : ∀ v : Fin 2 → ℝ, 0 ≤ Q v := by
+    intro v
+    rcases eq_or_ne v 0 with h | h
+    · rw [h, hQ0]
+    · exact le_of_lt (hpd ⟨v, trivial⟩ (fun hv0 => h (congrArg Subtype.val hv0)))
+  have hneg : ∀ x ∈ (⊤ : Submodule ℝ (Fin 2 → ℝ)), (-Q) x ≤ 0 := by
+    intro x _
+    rw [QuadraticMap.neg_apply]
+    linarith [hgeom x]
+  have hbnd := QuadraticForm.sigPos_add_finrank_le_of_nonpos (Q := -Q) hneg
+  rw [htop, hfr] at hbnd
+  simp only [sigNeg]
+  constructor <;> omega
+
+theorem tits_signature_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a * b = 4) :
+    sigPos (titsQF (a : ℤ) (b : ℤ)) = 1 ∧ sigNeg (titsQF (a : ℤ) (b : ℤ)) = 0 := by
+  set Q : QuadraticForm ℝ (Fin 2 → ℝ) := titsQF (a : ℤ) (b : ℤ) with hQ
+  have hfr : Module.finrank ℝ (Fin 2 → ℝ) = 2 := Module.finrank_fin_fun ℝ
+  have hsem : ∀ v : Fin 2 → ℝ, 0 ≤ Q v := by
+    intro v
+    rw [hQ]; simpa [titsQF_apply] using tits_semidefinite_at_four a b ha hb hab (v 0) (v 1)
+  -- sigNeg = 0
+  have hneg : ∀ x ∈ (⊤ : Submodule ℝ (Fin 2 → ℝ)), (-Q) x ≤ 0 := by
+    intro x _
+    rw [QuadraticMap.neg_apply]; linarith [hsem x]
+  have hbnd := QuadraticForm.sigPos_add_finrank_le_of_nonpos (Q := -Q) hneg
+  have htop : Module.finrank ℝ ↥(⊤ : Submodule ℝ (Fin 2 → ℝ)) = 2 := by
+    rw [finrank_top]; exact hfr
+  rw [htop, hfr] at hbnd
+  -- sigPos ≥ 1 from the line through (1,0)
+  set e : Fin 2 → ℝ := ![1, 0] with he
+  have he_ne : e ≠ 0 := by
+    intro h
+    have h0 : e 0 = 0 := by rw [h]; simp
+    simp [he] at h0
+  have hQe : Q e = 2 * (b : ℝ) := by rw [hQ]; simp [he, titsQF_apply, titsForm]
+  have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast (by omega : 0 < b)
+  have hpd_e : (QuadraticMap.restrict Q (ℝ ∙ e)).PosDef := by
+    intro x hx
+    rw [QuadraticMap.restrict_apply]
+    obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.mp (x : ↥(ℝ ∙ e)).2
+    have hc0 : c ≠ 0 := by
+      intro h0; apply hx; ext; rw [← hc, h0, zero_smul]; rfl
+    rw [← hc, QuadraticMap.map_smul, hQe]
+    simp only [smul_eq_mul]
+    have : 0 < c * c := mul_self_pos.mpr hc0
+    nlinarith
+  have hlb := le_sigPos_of_posDef Q hpd_e
+  rw [finrank_span_singleton he_ne] at hlb
+  -- sigPos ≤ 1 from the line through (a,2), where the form vanishes
+  set w : Fin 2 → ℝ := ![(a : ℝ), 2] with hw
+  have haR : (0 : ℝ) < (a : ℝ) := by exact_mod_cast (by omega : 0 < a)
+  have hw_ne : w ≠ 0 := by
+    intro h
+    have h0 : w 0 = 0 := by
+      rw [h]
+      simp
+    rw [hw] at h0
+    simp at h0
+    linarith
+  have hQw : Q w = 0 := by rw [hQ]; simpa [hw, titsQF_apply] using tits_vanishes_at_four a b ha hb hab
+  have hnonpos_w : ∀ x ∈ (ℝ ∙ w : Submodule ℝ (Fin 2 → ℝ)), Q x ≤ 0 := by
+    intro x hx
+    obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.mp hx
+    rw [← hc, QuadraticMap.map_smul, hQw]
+    simp
+  have hub := QuadraticForm.sigPos_add_finrank_le_of_nonpos (Q := Q) hnonpos_w
+  rw [finrank_span_singleton hw_ne, hfr] at hub
+  simp only [sigNeg] at hbnd ⊢
+  constructor <;> omega
+
 theorem golden_product_eq_four_cos_sq :
     4 * Real.cos (Real.pi / 5) ^ 2 = (3 + Real.sqrt 5) / 2 := by
   rw [Real.cos_pi_div_five]
