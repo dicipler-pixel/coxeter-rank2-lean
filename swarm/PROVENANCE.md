@@ -32,61 +32,70 @@ Limits, stated so a reviewer knows what the columns do and do not mean:
 
 | # | Statement | Repository lemmas | Mathlib facts mentioned | Source |
 |---|---|---|---|---|
-| 1 | `cartan_det` | — | `Matrix.det_fin_two` | Kac Ch. 4 (generalised Cartan matrices); Bourbaki VI §1 no. 5 |
-| 2 | `finite_exact_period` | — | — | Humphreys Ch. 1 §1.1 (`I₂(m)`), Ch. 6 (finite; crystallographic `m ∈ {2,3,4,6}`); Bourbaki IV §1 |
-| 3 | `affine_unipotent` | `step_sq_char` | — | Kac Ch. 4 (affine type: `det = 0`, proper principal minors > 0); Humphreys Ch. 6 §6.5 |
-| 4 | `affine_iterate` | `affine_unipotent`, `step_add`, `step_smul`, `step_sub` | — | no independent source — formal consequence of `affine_unipotent` |
-| 5 | `affine_no_positive_period` | `affine_iterate` | — | Bourbaki IV §1 no. 2 (`m = ∞`, infinite dihedral) |
-| 6 | `zero_product_iterate` | — | — | none — `(0,b)`, `b ≠ 0`, is not a generalised Cartan matrix |
-| 7 | `zero_product_no_positive_period` | `zero_product_iterate`, `zero_product_odd_iterate` | — | none — a negative control for Kac's criterion outside the GCM class |
-| 8 | `zero_partner_no_positive_period` | `zero_partner_iterate`, `zero_partner_odd_iterate` | — | none — mirror of the previous one |
-| 9 | `tits_positive_definite` | — | — | Kac Ch. 2 (invariant form), Ch. 4 (finite type criterion) |
-| 10 | `tits_semidefinite_at_four` | — | — | Kac Ch. 4 (affine type: positive semidefinite of corank 1) |
-| 11 | `tits_vanishes_at_four` | — | — | Kac Ch. 4 (affine type) |
-| 12 | `tits_negative_above_four` | — | — | Kac Ch. 4 (indefinite type) |
-| 13 | `tits_radical_at_four` | — | — | Kac Ch. 4 (affine: radical of corank 1) |
-| 14 | `tits_degenerate_at_four` | `tits_radical_at_four` | — | Kac Ch. 4 (degenerate invariant form at the boundary) |
-| 15 | `tits_posDef_iff_le_three` | `tits_posDef_imp_le_three`, `tits_positive_definite` | — | Kac Ch. 4, the principal-minor criterion read in both directions |
-| 16 | `tits_semidef_iff_le_four` | `tits_positive_definite`, `tits_semidef_imp_le_four`, `tits_semidefinite_at_four` | — | Kac Ch. 4, the same criterion for the semidefinite bound |
-| 17 | `tits_signature_below_four` | `posDef_on_top_iff` | `Module.finrank`, `Module.finrank_fin_fun`, `QuadraticForm.sigPos_add_finrank_le_of_nonpos`, `QuadraticMap.neg_apply`, `finrank_top`, `le_sigPos_of_posDef` … (+3) | Kac Ch. 4 (finite type, signature `(n,0)`); Mathlib `sigPos`/`sigNeg` |
-| 18 | `tits_signature_at_four` | `tits_semidefinite_at_four`, `tits_vanishes_at_four` | `Module.finrank`, `Module.finrank_fin_fun`, `QuadraticForm.sigPos_add_finrank_le_of_nonpos`, `QuadraticMap.map_smul`, `QuadraticMap.neg_apply`, `QuadraticMap.restrict_apply` … (+6) | Kac Ch. 4 (affine type, signature `(n−1,0)` with a one-dimensional radical) |
-| 19 | `tits_radical_finrank_at_four` | `tits_signature_at_four` | `Module.finrank`, `Module.finrank_fin_fun`, `QuadraticForm.sigPos_add_sigNeg_add_radical`, `QuadraticMap.radical`, `sigNeg`, `sigPos` | Kac Ch. 4 (corank 1), via Mathlib's inertia identity |
-| 20 | `tits_radical_eq_span_at_four` | `mem_radical_at_four`, `tits_radical_finrank_at_four` | `Module.finrank`, `QuadraticMap.radical`, `Submodule.eq_of_le_of_finrank_eq`, `Submodule.span_singleton_le_iff_mem`, `finrank_span_singleton` | Kac Ch. 4 (the null root spans the radical) |
-| 21 | `tits_signature_above_four` | `tits_negative_above_four` | `Module.finrank`, `Module.finrank_fin_fun`, `QuadraticForm.sigPos_add_finrank_le_of_nonpos`, `QuadraticMap.map_smul`, `QuadraticMap.neg_apply`, `QuadraticMap.restrict_apply` … (+6) | Kac Ch. 4 (indefinite type, signature `(n−1,1)`); Mathlib `sigPos`/`sigNeg` |
-| 22 | `tits_indefinite_above_four` | `tits_negative_above_four` | — | Kac Ch. 4 (indefinite type: the form takes both signs) |
+| 1 | `cartan_det` | `cartan` | `Matrix.det_fin_two` | Kac Ch. 4 (generalised Cartan matrices); Bourbaki VI §1 no. 5 |
+| 2 | `finite_exact_period` | `HasExactPeriod`, `step` | — | Humphreys Ch. 1 §1.1 (`I₂(m)`), Ch. 6 (finite; crystallographic `m ∈ {2,3,4,6}`); Bourbaki IV §1 |
+| 3 | `affine_unipotent` | `V`, `step`, `step_sq_char` | — | Kac Ch. 4 (affine type: `det = 0`, proper principal minors > 0); Humphreys Ch. 6 §6.5 |
+| 4 | `affine_iterate` | `V`, `affine_unipotent`, `iter`, `step`, `step_add`, `step_smul` … (+1) | — | no independent source — formal consequence of `affine_unipotent` |
+| 5 | `affine_no_positive_period` | `affine_iterate`, `iter`, `step` | — | Bourbaki IV §1 no. 2 (`m = ∞`, infinite dihedral) |
+| 6 | `zero_product_iterate` | `iter`, `step` | — | none — `(0,b)`, `b ≠ 0`, is not a generalised Cartan matrix |
+| 7 | `zero_product_no_positive_period` | `iter`, `step`, `zero_product_iterate`, `zero_product_odd_iterate` | — | none — a negative control for Kac's criterion outside the GCM class |
+| 8 | `zero_partner_no_positive_period` | `iter`, `step`, `zero_partner_iterate`, `zero_partner_odd_iterate` | — | none — mirror of the previous one |
+| 9 | `tits_positive_definite` | `titsForm` | — | Kac Ch. 2 (invariant form), Ch. 4 (finite type criterion) |
+| 10 | `tits_semidefinite_at_four` | `titsForm` | — | Kac Ch. 4 (affine type: positive semidefinite of corank 1) |
+| 11 | `tits_vanishes_at_four` | `titsForm` | — | Kac Ch. 4 (affine type) |
+| 12 | `tits_negative_above_four` | `titsForm` | — | Kac Ch. 4 (indefinite type) |
+| 13 | `tits_radical_at_four` | `titsBilin` | — | Kac Ch. 4 (affine: radical of corank 1) |
+| 14 | `tits_degenerate_at_four` | `titsBilin`, `tits_radical_at_four` | — | Kac Ch. 4 (degenerate invariant form at the boundary) |
+| 15 | `tits_posDef_iff_le_three` | `titsForm`, `tits_posDef_imp_le_three`, `tits_positive_definite` | — | Kac Ch. 4, the principal-minor criterion read in both directions |
+| 16 | `tits_semidef_iff_le_four` | `titsForm`, `tits_positive_definite`, `tits_semidef_imp_le_four`, `tits_semidefinite_at_four` | — | Kac Ch. 4, the same criterion for the semidefinite bound |
+| 17 | `tits_signature_below_four` | `posDef_on_top_iff`, `titsQF`, `titsQF_apply` | `Module.finrank`, `Module.finrank_fin_fun`, `QuadraticForm.sigPos_add_finrank_le_of_nonpos`, `QuadraticMap.neg_apply`, `finrank_top`, `le_sigPos_of_posDef` … (+3) | Kac Ch. 4 (finite type, signature `(n,0)`); Mathlib `sigPos`/`sigNeg` |
+| 18 | `tits_signature_at_four` | `titsForm`, `titsQF`, `titsQF_apply`, `tits_semidefinite_at_four`, `tits_vanishes_at_four` | `Module.finrank`, `Module.finrank_fin_fun`, `QuadraticForm.sigPos_add_finrank_le_of_nonpos`, `QuadraticMap.map_smul`, `QuadraticMap.neg_apply`, `QuadraticMap.restrict_apply` … (+6) | Kac Ch. 4 (affine type, signature `(n−1,0)` with a one-dimensional radical) |
+| 19 | `tits_radical_finrank_at_four` | `titsQF`, `tits_signature_at_four` | `Module.finrank`, `Module.finrank_fin_fun`, `QuadraticForm.sigPos_add_sigNeg_add_radical`, `QuadraticMap.radical`, `sigNeg`, `sigPos` | Kac Ch. 4 (corank 1), via Mathlib's inertia identity |
+| 20 | `tits_radical_eq_span_at_four` | `mem_radical_at_four`, `titsQF`, `tits_radical_finrank_at_four` | `Module.finrank`, `QuadraticMap.radical`, `Submodule.eq_of_le_of_finrank_eq`, `Submodule.span_singleton_le_iff_mem`, `finrank_span_singleton` | Kac Ch. 4 (the null root spans the radical) |
+| 21 | `tits_signature_above_four` | `titsForm`, `titsQF`, `titsQF_apply`, `tits_negative_above_four` | `Module.finrank`, `Module.finrank_fin_fun`, `QuadraticForm.sigPos_add_finrank_le_of_nonpos`, `QuadraticMap.map_smul`, `QuadraticMap.neg_apply`, `QuadraticMap.restrict_apply` … (+6) | Kac Ch. 4 (indefinite type, signature `(n−1,1)`); Mathlib `sigPos`/`sigNeg` |
+| 22 | `tits_indefinite_above_four` | `titsForm`, `tits_negative_above_four` | — | Kac Ch. 4 (indefinite type: the form takes both signs) |
 | 23 | `golden_product_eq_four_cos_sq` | — | `Real.cos`, `Real.cos_pi_div_five` | trigonometry (`cos(π/5) = (1+√5)/4`); the `H₂ = I₂(5)` context is not formalized |
+| 24 | `order_five_forces_golden_trace` | `HasExactPeriod`, `V`, `iter`, `iter_five`, `step`, `step_one_zero` … (+2) | — | Kac Ch. 4 (crystallographic `m ∈ {2,3,4,6}`); Humphreys Ch. 6 §6.6 |
+| 25 | `no_integral_period_five` | `HasExactPeriod`, `order_five_forces_golden_trace`, `step` | — | as above — the arithmetic content of "`H₂` is not crystallographic" |
 
 ## The helper lemmas underneath
 
 | Lemma | Repository lemmas | Mathlib facts mentioned |
 |---|---|---|
-| `mem_radical_at_four` | `titsQF_shift`, `tits_vanishes_at_four` | `QuadraticMap.mem_radical_iff'`, `QuadraticMap.radical` |
+| `iter_five` | `V`, `iter`, `step`, `step_sq_char` | — |
+| `mem_radical_at_four` | `titsForm`, `titsQF`, `titsQF_apply`, `titsQF_shift`, `tits_vanishes_at_four` | `QuadraticMap.mem_radical_iff'`, `QuadraticMap.radical` |
 | `pair_a_two_ne_zero` | — | — |
 | `pair_ne_zero_of_ne_zero` | — | — |
-| `posDef_on_top_iff` | `pair_ne_zero_of_ne_zero`, `tits_positive_definite` | `QuadraticMap.restrict`, `QuadraticMap.restrict_apply` |
-| `step_add` | — | — |
-| `step_smul` | — | — |
-| `step_sq_char` | — | — |
-| `step_sub` | — | — |
-| `titsBilin_self` | — | — |
-| `titsForm_shift` | — | — |
-| `titsQF_shift` | `titsForm_shift` | — |
-| `tits_posDef_imp_le_three` | `pair_a_two_ne_zero`, `tits_negative_above_four`, `tits_vanishes_at_four` | — |
-| `tits_semidef_imp_le_four` | `tits_negative_above_four` | — |
-| `zero_partner_iterate` | — | — |
-| `zero_partner_odd_iterate` | `zero_partner_iterate` | — |
-| `zero_product_odd_iterate` | `zero_product_iterate` | — |
+| `posDef_on_top_iff` | `pair_ne_zero_of_ne_zero`, `titsQF`, `titsQF_apply`, `tits_positive_definite` | `QuadraticMap.restrict`, `QuadraticMap.restrict_apply` |
+| `step_add` | `V`, `step` | — |
+| `step_one_zero` | `step` | — |
+| `step_smul` | `V`, `step` | — |
+| `step_sq_char` | `V`, `step` | — |
+| `step_sub` | `V`, `step` | — |
+| `step_zero_one` | `step` | — |
+| `step_zero_zero_neg` | `V`, `step` | — |
+| `titsBilin_self` | `titsBilin`, `titsForm` | — |
+| `titsForm_shift` | `titsForm` | — |
+| `titsQF_shift` | `titsForm`, `titsForm_shift`, `titsQF`, `titsQF_apply` | — |
+| `tits_posDef_imp_le_three` | `pair_a_two_ne_zero`, `titsForm`, `tits_negative_above_four`, `tits_vanishes_at_four` | — |
+| `tits_semidef_imp_le_four` | `titsForm`, `tits_negative_above_four` | — |
+| `zero_partner_iterate` | `iter`, `step` | — |
+| `zero_partner_odd_iterate` | `iter`, `step`, `zero_partner_iterate` | — |
+| `zero_product_odd_iterate` | `iter`, `step`, `zero_product_iterate` | — |
 
 ## Reading the table against `AUDIT.md`
 
-Three statements have no literature source, and that is deliberate rather than an omission: the
-`zero_*` trio treats pairs `(0, b)` with `b ≠ 0`, which violate the generalised-Cartan-matrix
-condition `a_ij = 0 ⟺ a_ji = 0`. There is no theorem in Kac to match them against, because they are
-not Coxeter data; their role is to show that `4 − ab > 0` does not by itself give finiteness. A
-reviewer should check that they say that, not that they say something in a book.
+Three statements have no literature source, and that is deliberate: the `zero_*` trio treats pairs
+`(0, b)` with `b ≠ 0`, which violate the generalised-Cartan-matrix condition `a_ij = 0 ⟺ a_ji = 0`.
+There is no theorem in Kac to match them against because they are not Coxeter data; their role is to
+show that `4 − ab > 0` does not by itself give finiteness. A reviewer should check that they say
+that, not that they say something in a book.
+
+Statements 24 and 25 are the `H₂` gap. Note what they do **not** depend on: neither mentions a
+reflection group, a Cartan matrix for `I₂(5)`, or `sin(π/5)`. They are statements about the integral
+model, and the last section of `LIMITATIONS.md` says so.
 
 Everything else traces to Kac Ch. 4 (the finite/affine/indefinite trichotomy by principal minors),
 with Ch. 2 for the invariant form, and to Humphreys Ch. 1 §1.1 / Ch. 6 or Bourbaki IV §1 for the
 rank-two Coxeter side. Chapter and section level is what the audits could verify; the proposition
 numbering inside those books is marked unverified in `AUDIT.md`.
-

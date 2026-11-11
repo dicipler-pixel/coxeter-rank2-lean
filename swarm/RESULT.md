@@ -141,3 +141,27 @@ then rested on a check that was not pin-exact. The CI workflow now gates **every
 `swarm/submissions/` under the pinned toolchain (`lake env python3 scripts/gate.py …`), so each
 route recorded here is pin-verified rather than merely reported. That step is what makes the
 tables above evidence rather than notes.
+
+## Fourth campaign: order five is impossible, proved five ways
+
+The two statements of the `H₂` gap — `order_five_forces_golden_trace` (period 5 forces
+`(a*b)² − 3(a*b) + 1 = 0`) and `no_integral_period_five` — were proved five times, independently:
+
+| Route | Proved by | Idea |
+| :--- | :--- | :--- |
+| five-fold unfolding | coordinator, swarm m1, m4 | iterate `T² = tT − 1` four times, evaluate at `(1,0)` and `(0,1)`, then `t²+t−1 = 0` |
+| Chebyshev recurrence | swarm m4 | `Tⁿv = fₙ·Tv − fₙ₋₁·v` by one induction, specialised at `n = 5` |
+| geometric sum | swarm m2 | `T⁴+T³+T²+T+1 = T²(t²+t−1)`; surjectivity plus torsion-freeness replaces the degenerate-pair case split |
+| matrix powers | swarm m5 | `M⁵ = 1` for `M = !![ab−1,−a;b,−1]`, then `M⁵ = c₅M − d₅1` entrywise |
+| modulus 4 | swarm m3 | `5 ∤ |GL₂(ℤ/4)| = 96`, so a period-5 element would reduce to the identity, which is impossible |
+
+One honest qualification, recorded because it is easy to miss: **m3's proof of the first
+statement is vacuous.** Its mod-4 argument refutes the hypothesis outright, so the implication holds
+by `exfalso` and the golden relation is never derived. That is a correct proof of the frozen
+statement and it is the cheapest proof of the second one — but it is not independent evidence for
+the content of the first, which the other four routes establish non-vacuously.
+
+Two corrections to my own brief came out of the campaign: `step_sq_char` is in
+`RankTwoClassification.lean`, not `RankTwoCertificate.lean` as the brief said (three members
+reproved it rather than trust the pointer), and `t³ − 2t + 1 = 0` alone does not give the result —
+it needs the combination `t·(d₅+1) − c₅` that m5 names.
