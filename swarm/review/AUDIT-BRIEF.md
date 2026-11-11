@@ -80,6 +80,8 @@ positive universal period). `titsForm` is the quadratic form of `diag(b,a) * car
 | 10 | `tits_vanishes_at_four` | Kac Ch. 4 (affine type) |
 | 11 | `tits_negative_above_four` | Kac Ch. 4 (indefinite type) |
 | 12 | `golden_product_eq_four_cos_sq` | trigonometry; the `H₂ = I₂(5)` context |
+| 13 | `tits_semidefinite_at_four` | Kac Ch. 4 (affine type: positive semidefinite of corank 1); and what "degenerate" requires |
+| 14 | `tits_indefinite_above_four` | Kac Ch. 4 (indefinite type: `∃v, (v|v) > 0` and `∃w, (w|w) < 0`) |
 
 Mark clearly which citations you verified and which you recalled.
 
