@@ -144,6 +144,11 @@ theorem tits_radical_finrank_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (
     Module.finrank ℝ (QuadraticMap.radical (titsQF (a : ℤ) (b : ℤ))) = 1 := by
   sorry
 
+/-- Affine side, sharpest form: the radical is spanned by the vector `(a, 2)`. -/
+theorem tits_radical_eq_span_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a * b = 4) :
+    QuadraticMap.radical (titsQF (a : ℤ) (b : ℤ)) = ℝ ∙ (![(a : ℝ), 2] : Fin 2 → ℝ) := by
+  sorry
+
 
 /-- Indefinite side, as a signature statement rather than a pair of witnesses: above the boundary
 the form has signature `(1, 1)` — one positive and one negative dimension. -/

@@ -35,6 +35,7 @@ what your verdict covers.
 | 20 | `tits_signature_below_four` | | | |
 | 21 | `tits_signature_at_four` | | | |
 | 22 | `tits_radical_finrank_at_four` | | | |
+| 23 | `tits_radical_eq_span_at_four` | | | |
 
 ## Anything true but not what it says
 

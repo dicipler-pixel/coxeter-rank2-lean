@@ -590,6 +590,47 @@ theorem tits_radical_finrank_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (
   obtain ⟨hp, hn⟩ := tits_signature_at_four a b ha hb hab
   omega
 
+/-- Shifting the argument by `(a, 2)` changes `titsForm` by `2a(4 - ab)(1 + y)`. -/
+lemma titsForm_shift (a b : ℤ) (x y : ℝ) :
+    titsForm a b ((a : ℝ) + x) (2 + y)
+      = titsForm a b x y + 2 * (a : ℝ) * (4 - (a : ℝ) * (b : ℝ)) * (1 + y) := by
+  simp only [titsForm]
+  push_cast
+  ring
+
+lemma titsQF_shift (a b : ℤ) (h : (a : ℝ) * (b : ℝ) = 4) (v : Fin 2 → ℝ) :
+    titsQF a b (![(a : ℝ), 2] + v) = titsQF a b v := by
+  rw [titsQF_apply, titsQF_apply]
+  have h0 : (![(a : ℝ), 2] + v) 0 = (a : ℝ) + v 0 := by simp
+  have h1 : (![(a : ℝ), 2] + v) 1 = 2 + v 1 := by simp
+  rw [h0, h1, titsForm_shift, h]
+  ring
+
+lemma mem_radical_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a * b = 4) :
+    (![(a : ℝ), 2] : Fin 2 → ℝ) ∈ QuadraticMap.radical (titsQF (a : ℤ) (b : ℤ)) := by
+  have hcast : (a : ℝ) * (b : ℝ) = 4 := by
+    have h : ((a * b : ℕ) : ℝ) = ((4 : ℕ) : ℝ) := by rw [hab]
+    push_cast at h
+    linarith
+  rw [QuadraticMap.mem_radical_iff']
+  refine ⟨?_, fun n => titsQF_shift _ _ hcast n⟩
+  simpa using tits_vanishes_at_four a b ha hb hab
+
+-- Route found by swarm member m1 (second campaign, direction d3): a shift identity for the form
+-- rather than a coordinate expansion.
+theorem tits_radical_eq_span_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a * b = 4) :
+    QuadraticMap.radical (titsQF (a : ℤ) (b : ℤ)) = ℝ ∙ (![(a : ℝ), 2] : Fin 2 → ℝ) := by
+  have hle : ℝ ∙ (![(a : ℝ), 2] : Fin 2 → ℝ) ≤ QuadraticMap.radical (titsQF (a : ℤ) (b : ℤ)) :=
+    Submodule.span_singleton_le_iff_mem _ _ |>.mpr (mem_radical_at_four a b ha hb hab)
+  have hne : (![(a : ℝ), 2] : Fin 2 → ℝ) ≠ 0 := by
+    intro h
+    have := congrFun h 1
+    simp at this
+  have h1 : Module.finrank ℝ ↥(ℝ ∙ (![(a : ℝ), 2] : Fin 2 → ℝ)) = 1 := finrank_span_singleton hne
+  have h2 := tits_radical_finrank_at_four a b ha hb hab
+  exact (Submodule.eq_of_le_of_finrank_eq hle (by rw [h1, h2])).symm
+
+
 theorem golden_product_eq_four_cos_sq :
     4 * Real.cos (Real.pi / 5) ^ 2 = (3 + Real.sqrt 5) / 2 := by
   rw [Real.cos_pi_div_five]
