@@ -117,3 +117,27 @@ evidence in this repository that a statement is not just true but natural:
 The library keeps the coordinator's proof; the other four are in `swarm/submissions/signature-*.lean`,
 each gated with the same axiom set. Together with `tits_signature_below_four` and
 `tits_signature_at_four`, the signature is now `(2,0)`, `(1,0)`, `(1,1)` on the three sides.
+
+## Third campaign: the radical at the boundary, proved five ways
+
+`tits_radical_finrank_at_four` (dimension exactly 1) and `tits_radical_eq_span_at_four` (the
+radical *is* the line through `(a, 2)`) were proved five times, independently of the library:
+
+| Route | Proved by | Idea |
+| :--- | :--- | :--- |
+| shift identity + inertia | swarm m1, adopted into the library | `Q(a+x, 2+y) = Q(x,y) + 2a(4−ab)(1+y)` vanishes at `ab = 4`, so `(a,2)` is radical; then `sigPos + sigNeg + dim radical = 2` |
+| perfect square | swarm m3 | at `ab = 4`, `b·Q(v) = 2(b v₀ − 2 v₁)²`, so the radical is the kernel of one linear functional; rank–nullity gives dimension 1 |
+| polar pairing | swarm m2, m5 | `polar(titsQF) = 2·titsBilin`; one pairing against `e₀` gives `2v₀ = a v₁`, hence `v ∈ ℝ·(a,2)` |
+| matrix rank and coordinates | swarm m4 | the radical is the kernel of the polar map; span inclusion from `B((a,2),w) = a y (4−ab)`, reverse inclusion from one equation |
+
+The library's own proof of the span statement is m1's route, adopted with attribution in the
+source. `swarm/submissions/radical-m*.lean` holds the rest.
+
+## How the submissions are checked
+
+Until now the swarm files were gated only in the development VM, under Lean 4.33.1 while the
+repository pins 4.33.0 — the gate said so on every run, but the claim "four independent proofs"
+then rested on a check that was not pin-exact. The CI workflow now gates **every** file in
+`swarm/submissions/` under the pinned toolchain (`lake env python3 scripts/gate.py …`), so each
+route recorded here is pin-verified rather than merely reported. That step is what makes the
+tables above evidence rather than notes.

@@ -207,6 +207,11 @@ first check of statement 5's iterate identity failed on a typing error of mine b
   statement 2's conclusion, only for reading it as an order in a Coxeter group.
 - **Positive semidefiniteness at `ab = 4`, indefiniteness above, the `H₂` geometry**: asserted by
   the literature, not formalized here.
+- **Freeze discipline.** Statements were edited after freezing five times, all recorded in
+  [`FREEZE-LOG.md`](FREEZE-LOG.md) with before, after and reason: two syntax corrections, one
+  rename, one split, one hold-and-restore. The split is the one a reviewer should look at — a
+  conjunct was moved out of `tits_signature_at_four` because it was not provable in that proof,
+  and came back later as its own theorem. Freezing is worth nothing if such moves are invisible.
 - **An LLM audit is not a referee.** A human algebraist reading `swarm/Statements.lean` against Kac
   is still the standard this falls short of. No reviewer has been secured, and the agents in this
   repository cannot secure one: there is no outreach channel and the GitHub integration here cannot

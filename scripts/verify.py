@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import pathlib
 import re
 import subprocess
@@ -105,6 +106,37 @@ def check_every_built_module_is_accounted_for() -> None:
             f"`definition_modules` of scripts/config.json: it would be built and never audited")
 
 
+SUBMISSIONS = ROOT / "swarm" / "submissions"
+
+
+def check_recorded_submissions() -> dict[str, str]:
+    """Gate every recorded swarm submission under the same toolchain as the library.
+
+    `swarm/RESULT.md` claims that several statements were proved by independent routes. Those
+    files were written and gated in a development VM whose Lean was not the pinned one, so until
+    this step runs the claim rests on a check that is not pin-exact. Each file is put through
+    `scripts/gate.py` here, with this process's LEAN_PATH, which in CI is the pinned Mathlib.
+    """
+    if not SUBMISSIONS.is_dir():
+        return {}
+    base = os.environ.get("LEAN_PATH", "")
+    if not base:
+        base = run(["lake", "env", "printenv", "LEAN_PATH"]).stdout.strip()
+    env = dict(os.environ)
+    env["LEAN_PATH"] = base
+    results: dict[str, str] = {}
+    for path in sorted(SUBMISSIONS.glob("*.lean")):
+        proc = subprocess.run(
+            [sys.executable, str(ROOT / "scripts" / "gate.py"),
+             "--submission", str(path), "--partial"],
+            cwd=ROOT, env=env, capture_output=True, text=True)
+        results[path.name] = "pass" if proc.returncode == 0 else "FAIL"
+        if proc.returncode != 0:
+            raise SystemExit(f"recorded submission failed the gate: {path.name}\n"
+                             f"{proc.stdout[-3000:]}{proc.stderr[-2000:]}")
+    return results
+
+
 def main() -> int:
     OUT.mkdir(exist_ok=True)
     check_every_built_module_is_accounted_for()
@@ -173,6 +205,7 @@ def main() -> int:
     if len(controls) < EXPECTED_FALSE_CONTROLS:
         raise SystemExit(f"expected {EXPECTED_FALSE_CONTROLS} false controls, found {len(controls)}")
     report["false_controls"] = controls
+    report["recorded_submissions"] = check_recorded_submissions()
 
     (OUT / "report.json").write_text(json.dumps(report, indent=2, sort_keys=True) + "\n")
     print(f"OK: {total} theorems, "
