@@ -11,6 +11,7 @@ Who read what, and which model:
 | `pass1-m5-all-twelve.md` | pass-1 m5 | mistral-large-4-0 | all twelve statements |
 | `pass2-m1-statements-1-3.md` | pass-2 m1 | mistral-large-4-0 | statements 1–3 |
 | `statement-1.md` … `statement-12.md` | pass-3 m1, one swarm per statement | deepseek-v4.1-flash | one statement each |
+| `statement-13.md`, `statement-14.md` | pass-4 m1, one swarm per statement | muse-spark-open | the two trichotomy statements added after the audit |
 
 These are language-model reports, not referees. Their verdicts are recorded in `AUDIT.md` only after
 the claims were checked against the definitions, a computation, or a fetched source; where a report's

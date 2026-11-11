@@ -17,8 +17,8 @@ the proofs or the author's review.
   one delivered. Pass 3 ran **one member per statement, twelve separate swarms**: all twelve
   delivered, with no contention at all, because a one-member swarm has no board to fight over.
 - **Readings per statement.** Statements 1–3 have three independent readings each (passes 1, 2
-  and 3); statements 4–12 have two (passes 1 and 3). The single-reading gap this file recorded
-  after pass 1 is closed for all twelve.
+  and 3); statements 4–14 have two (passes 1 and 3, or 1 and 4 for the two added later). The
+  single-reading gap this file recorded after pass 1 is closed for all fourteen.
 - **Not referees.** These are language models. Nothing below is recorded as *verified* because an
   auditor said it: it is verified because it was computed here, quoted from a fetched source, or
   checked against the definitions. Where a citation was not checked, it is not repeated as fact.
@@ -105,16 +105,32 @@ belongs:
 
 ## 5a. Closing the gap the readers flagged
 
-Two statements were added after the audit, and they are the only claims in the library with **no
-independent reading at all** — they were written and proved by the coordinator, gated by
-`scripts/gate.py` (parity, compile, kernel replay, axioms, false controls) and confirmed by CI, but
-no reader has yet judged whether they say what they are named. That is the same position statements
-1–3 were in before pass 1, and it is recorded rather than glossed.
+Two statements were added after the audit, written and proved by the coordinator and gated by
+`scripts/gate.py` (parity, compile, kernel replay, axioms, false controls). Because they had no
+independent reading, a fourth pass — one swarm per statement, on `meta/muse-spark-open`, a family
+neither the author nor pass 3 used — read them. Both reported, and both readings are folded in
+below; every statement in the library now has at least one independent reading.
 
 | Statement | What it says | Why it was added |
 |---|---|---|
 | `tits_semidefinite_at_four` | at `a*b = 4`, `0 ≤ titsForm a b x y` for all `x, y` — with `tits_vanishes_at_four` this makes the form degenerate | the affine side of the trichotomy was a witness (`Q(a,2) = 0`) rather than a sign |
 | `tits_indefinite_above_four` | above `a*b = 4` the form takes both signs, ∃ a positive and ∃ a negative value | indefiniteness was one negative value and an unstated `Q(1,0) = 2b > 0` |
+
+What the fourth pass said:
+
+- **`tits_semidefinite_at_four` — weaker than the standard fact.** True and correctly named: the
+  name promises positive semidefiniteness and it delivers that. But "degenerate" in Kac's sense
+  needs the radical, and the pair (13)+(10) entails degeneracy only through the standard lemma
+  *PSD with an isotropic vector implies that vector is in the radical* (minimise `Q(v₀ + t w)` in
+  `t`). True in any dimension, and a proof the library does not contain. The docstring's "together
+  … makes it degenerate" is a correct informal corollary; `LIMITATIONS.md` already disclaims the
+  radical step, which the reader checked. **The missing piece is one line**: `B((a,2),(x,y)) = a·y·(4 − ab)`.
+- **`tits_indefinite_above_four` — matches.** And the reader drew the distinction I asked for more
+  sharply than I had: "takes both signs" and "signature (1,1)" are *not* equivalent in general
+  dimension — `x² − y²` on `ℝ³` is degenerate and takes both signs — but they coincide in rank two,
+  because a real symmetric `2×2` form with `det = 0` is semidefinite. Since `det = ab(4 − ab) < 0`
+  above the boundary, both signs force signature `(1,1)`, so the witnesses `(1,0)` and `(a,2)` do
+  suffice for the standard claim, up to that elementary `2×2` lemma.
 
 Both are one or two lines from what was already there: `2b·Q = (2bx − ab y)² + ab(4−ab)y²` gives
 nonnegativity at `ab = 4`, and `Q(1,0) = 2b` supplies the positive value. `LIMITATIONS.md` now
