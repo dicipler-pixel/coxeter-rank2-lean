@@ -21,8 +21,8 @@ What each target closes:
   `4 - a*b` alone does not decide finiteness of the product;
 * **T5** the sign of the Tits form — positive definite for `1 ≤ a, b` with `a*b ≤ 3` (at
   `(0, 0)` the symmetriser degenerates and the form is identically zero), nonnegative at
-  `a*b = 4` with a zero at `(a, 2)` there (so degenerate), and taking both signs above — see the
-  Tits bullet in `LIMITATIONS.md`;
+  `a*b = 4` with `(a, 2)` in the radical of the bilinear form (so degenerate), and taking both
+  signs above — see the Tits bullet in `LIMITATIONS.md`;
 * **T6** `4cos²(π/5) = (3+√5)/2`, the identification the golden paragraph only half makes.
 -/
 
@@ -103,6 +103,16 @@ theorem tits_vanishes_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a
 /-- Indefinite side: the same vector makes the form negative once `a*b > 4`. -/
 theorem tits_negative_above_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : 4 < a * b) :
     titsForm (a : ℤ) (b : ℤ) (a : ℝ) 2 < 0 := by
+  sorry
+
+/-- Affine side: at `a*b = 4` the vector `(a, 2)` is in the radical of the bilinear form. -/
+theorem tits_radical_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a * b = 4)
+    (x y : ℝ) : titsBilin (a : ℤ) (b : ℤ) (a, 2) (x, y) = 0 := by
+  sorry
+
+/-- Affine side, the standard statement: the bilinear form is degenerate at `a*b = 4`. -/
+theorem tits_degenerate_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a * b = 4) :
+    ∃ v : ℝ × ℝ, v ≠ 0 ∧ ∀ w : ℝ × ℝ, titsBilin (a : ℤ) (b : ℤ) v w = 0 := by
   sorry
 
 /-- Indefinite side: above the boundary the form takes both signs, so it is indefinite. -/

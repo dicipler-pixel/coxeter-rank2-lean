@@ -27,6 +27,8 @@ what your verdict covers.
 | 12 | `golden_product_eq_four_cos_sq` | | | |
 | 13 | `tits_semidefinite_at_four` | | | |
 | 14 | `tits_indefinite_above_four` | | | |
+| 15 | `tits_radical_at_four` | | | |
+| 16 | `tits_degenerate_at_four` | | | |
 
 ## Anything true but not what it says
 

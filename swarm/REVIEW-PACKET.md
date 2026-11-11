@@ -1,7 +1,7 @@
 # Reviewer packet: twelve statements, checked against the literature
 
 For an algebraist who has not worked on this repository. Time: about 30–45 minutes for the twelve
-statements of the first campaign, 40–55 for all fourteen. You are not
+statements of the first campaign, 45–60 for all sixteen. You are not
 asked to read proofs or to know Lean. You are asked one thing: **does each statement say the
 standard mathematical fact its name and docstring claim, under the hypotheses written?**
 
@@ -19,7 +19,8 @@ step a b    = s1 a ∘ s2 b                -- the Coxeter element
 iter f n    = f iterated n times
 HasExactPeriod f n ⇔ (∀ x, iter f n x = x) ∧ ∀ m, 0 < m → m < n → ∃ x, iter f m x ≠ x
 cartan a b  = !![2, -a; -b, 2]           -- rank-two Cartan matrix, off-diagonal magnitudes a, b
-titsForm a b x y = 2*b*x² - 2*(a*b)*x*y + 2*a*y²   -- symmetrised invariant form, symmetriser diag(b, a)
+titsForm a b x y = 2*b*x² - 2*(a*b)*x*y + 2*a*y²   -- symmetrised invariant form, Gram = diag(b,a) * cartan
+titsBilin a b u v = 2b·u₁v₁ - ab(u₁v₂ + u₂v₁) + 2a·u₂v₂        -- its polar form
 ```
 
 `HasExactPeriod f n` is "the map `f` has exact period `n`". `titsForm` is the quadratic form of
@@ -52,6 +53,8 @@ The Lean statements are in `swarm/Statements.lean`; they are reproduced in plain
 | 12 | `golden_product_eq_four_cos_sq` | `4cos²(π/5) = (3+√5)/2` | trigonometry; `H₂ = I₂(5)` | Is it acceptable to prove only the arithmetic and to say in `LIMITATIONS.md` that the `H₂` geometry is not formalized? |
 | 13 | `tits_semidefinite_at_four` | at `a·b = 4`: `0 ≤ titsForm a b x y` for all `x, y` | Kac Ch. 4 (affine type: psd of corank 1) | With `tits_vanishes_at_four` this makes the form degenerate. Is nonnegativity plus a zero the right way to say "degenerate", or should radical membership be proved separately? |
 | 14 | `tits_indefinite_above_four` | at `a·b > 4`: the form takes both signs | Kac Ch. 4 (indefinite type) | Is "both signs" the right definition of indefinite here, and does the pair of witnesses (`(1,0)` and `(a,2)`) carry it? |
+| 15 | `tits_radical_at_four` | at `a·b = 4`: `B((a,2), w) = 0` for every `w` | Kac Ch. 4 (affine: radical of corank 1) | Is `B` here the polar form of the Tits form, and is `(a,2)` the right radical vector, or should it be normalised? |
+| 16 | `tits_degenerate_at_four` | at `a·b = 4`: `∃ v ≠ 0, ∀ w, B v w = 0` | Kac Ch. 4 | Is this the standard statement that the form is degenerate, and does it need corank exactly 1 stated separately? |
 
 ## What to send back
 

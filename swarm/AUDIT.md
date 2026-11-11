@@ -122,9 +122,13 @@ What the fourth pass said:
   name promises positive semidefiniteness and it delivers that. But "degenerate" in Kac's sense
   needs the radical, and the pair (13)+(10) entails degeneracy only through the standard lemma
   *PSD with an isotropic vector implies that vector is in the radical* (minimise `Q(v₀ + t w)` in
-  `t`). True in any dimension, and a proof the library does not contain. The docstring's "together
-  … makes it degenerate" is a correct informal corollary; `LIMITATIONS.md` already disclaims the
-  radical step, which the reader checked. **The missing piece is one line**: `B((a,2),(x,y)) = a·y·(4 − ab)`.
+  `t`). True in any dimension, and a proof the library did not contain. The docstring's "together
+  … makes it degenerate" was a correct informal corollary; `LIMITATIONS.md` disclosed the radical
+  step, which the reader checked. **The missing piece was one line** — `B((a,2),(x,y)) = a·y·(4 − ab)`
+  — and it is now proved: `tits_radical_at_four` establishes the radical membership and
+  `tits_degenerate_at_four` states degeneracy in the standard form, `∃ v ≠ 0, ∀ w, B v w = 0`. The
+  verdict on statement 13 stands as written; what it was missing has been added beside it rather
+  than retrofitted into it.
 - **`tits_indefinite_above_four` — matches.** And the reader drew the distinction I asked for more
   sharply than I had: "takes both signs" and "signature (1,1)" are *not* equivalent in general
   dimension — `x² − y²` on `ℝ³` is degenerate and takes both signs — but they coincide in rank two,

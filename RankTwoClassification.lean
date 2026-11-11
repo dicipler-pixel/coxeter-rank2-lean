@@ -1,3 +1,4 @@
+import RankTwoTargets
 import RankTwoCertificate
 
 /-!
@@ -43,27 +44,6 @@ here.
 set_option autoImplicit false
 
 namespace OperatorFirst.CoxeterRankTwo
-
-/-! ## The objects -/
-
-/-- The rank-two Cartan matrix with off-diagonal magnitudes `a`, `b`. It is a generalised
-Cartan matrix in Kac's sense (`a_ij ≤ 0` for `i ≠ j`, and `a_ij = 0 ⟺ a_ji = 0`) only when
-`a, b ≥ 0` and `a = 0 ⟺ b = 0`; the determinant identity below holds for all `a, b : ℤ`.
-
-One convention to keep straight: the reflection pair of `RankTwoCertificate` (`s1 a`, `s2 b`)
-satisfies `s_i(α_j) = α_j - a_{ji} α_i` for the matrix `cartan b a`, i.e. the transpose of the
-matrix named here. Nothing below is affected — every statement depends on `a*b` alone, and
-`titsForm a b x y = titsForm b a y x` — but the two writings should not be confused. -/
-def cartan (a b : ℤ) : Matrix (Fin 2) (Fin 2) ℤ := !![2, -a; -b, 2]
-
-/-- The symmetrised Tits form of `cartan a b`: the Gram matrix is `diag b 1 * A * diag 1 a`,
-that is `2 b x² - 2 (a b) x y + 2 a y²`. For `1 ≤ a, b` what is proved here is that it is
-positive definite when `a*b ≤ 3`, vanishes at `(a, 2)` when `a*b = 4`, and is negative at
-`(a, 2)` when `4 < a*b`. At `a*b = 4` the vector `(a, 2)` is in fact in the radical of the
-associated bilinear form, whose value is `B((a,2),(x,y)) = a y (4 - a b)`, and the form is
-positive semidefinite there; neither of those two facts is formalized in this file. -/
-def titsForm (a b : ℤ) (x y : ℝ) : ℝ :=
-  2 * b * x ^ 2 - 2 * ((a * b : ℤ) : ℝ) * x * y + 2 * a * y ^ 2
 
 /-! ## m1 — the charpoly identity, linearity, finite periods, affine side, Tits positivity -/
 
@@ -319,6 +299,37 @@ theorem tits_negative_above_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab 
     push_cast at h
     linarith
   nlinarith
+
+/-- The polar form restricts to `titsForm` on the diagonal. -/
+@[simp] lemma titsBilin_self (a b : ℤ) (u : ℝ × ℝ) :
+    titsBilin a b u u = titsForm a b u.1 u.2 := by
+  simp only [titsBilin, titsForm]
+  ring
+
+/-- Affine side: at `a*b = 4` the vector `(a, 2)` is in the radical of the bilinear form. -/
+theorem tits_radical_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a * b = 4)
+    (x y : ℝ) : titsBilin (a : ℤ) (b : ℤ) (a, 2) (x, y) = 0 := by
+  have h : (a : ℝ) * (b : ℝ) = 4 := by
+    have h4 : ((a * b : ℕ) : ℝ) = ((4 : ℕ) : ℝ) := by rw [hab]
+    push_cast at h4
+    linarith
+  simp only [titsBilin]
+  push_cast
+  linear_combination (-((a : ℝ) * y)) * h
+
+/-- Affine side, the standard statement: at `a*b = 4` the bilinear form is degenerate — some
+nonzero vector pairs to zero with every vector. -/
+theorem tits_degenerate_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a * b = 4) :
+    ∃ v : ℝ × ℝ, v ≠ 0 ∧ ∀ w : ℝ × ℝ, titsBilin (a : ℤ) (b : ℤ) v w = 0 := by
+  refine ⟨((a : ℝ), 2), ?_, ?_⟩
+  · intro h
+    have ha0 : (a : ℝ) = 0 := by simpa using congrArg Prod.fst h
+    have haR : (0 : ℝ) < (a : ℝ) := by
+      have : (0 : ℕ) < a := by omega
+      exact_mod_cast this
+    linarith
+  · rintro ⟨x, y⟩
+    exact tits_radical_at_four a b ha hb hab x y
 
 /-- Indefinite side: above the boundary the form takes both signs, so it is indefinite. -/
 theorem tits_indefinite_above_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : 4 < a * b) :

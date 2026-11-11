@@ -63,6 +63,7 @@ BUILD = os.path.join(VERIFY, "build")
 WORK = os.path.join(VERIFY, "work")
 STATEMENTS = os.path.join(ROOT, "swarm", "Statements.lean")
 TARGETS = os.path.join(ROOT, "swarm", "Targets.lean")
+TARGET_DEFS = os.path.join(ROOT, "RankTwoTargets.lean")
 CORE = os.path.join(ROOT, "RankTwoCertificate.lean")
 CONTROLS = os.path.join(ROOT, "swarm", "FalseControls")
 REPORT = os.path.join(VERIFY, "gate-report.json")
@@ -201,6 +202,7 @@ def prepare(result: Result) -> dict:
     hashes = {
         "lean": lean_version,
         "RankTwoCertificate": sha256(CORE),
+        "RankTwoTargets": sha256(TARGET_DEFS),
         "Targets": sha256(TARGETS),
         "Statements": sha256(STATEMENTS),
     }
@@ -212,12 +214,14 @@ def prepare(result: Result) -> dict:
             have = {}
     complete = (have == hashes
                 and os.path.exists(os.path.join(BUILD, "RankTwoCertificate.olean"))
+                and os.path.exists(os.path.join(BUILD, "RankTwoTargets.olean"))
                 and os.path.exists(os.path.join(BUILD, "Targets.olean")))
     if complete:
         return {**hashes, "cache": "hit"}
 
     env = lean_env(BUILD)
-    for source, module in ((CORE, "RankTwoCertificate"), (TARGETS, "Targets")):
+    for source, module in ((CORE, "RankTwoCertificate"), (TARGET_DEFS, "RankTwoTargets"),
+                           (TARGETS, "Targets")):
         shutil.copy(source, os.path.join(BUILD, module + ".lean"))
         proc = result.run(["lean", "-o", module + ".olean", module + ".lean"],
                           cwd=BUILD, env=env)

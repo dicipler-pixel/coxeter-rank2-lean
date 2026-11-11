@@ -6,7 +6,7 @@
 
 [![Lean proof check](https://github.com/dicipler-pixel/coxeter-rank2-lean/actions/workflows/build.yml/badge.svg)](https://github.com/dicipler-pixel/coxeter-rank2-lean/actions/workflows/build.yml)
 ![Lean](https://img.shields.io/badge/Lean-v4.33.0-blue)
-![Theorems](https://img.shields.io/badge/theorems-58-2EA043)
+![Theorems](https://img.shields.io/badge/theorems-60-2EA043)
 ![sorry](https://img.shields.io/badge/sorry-0-2EA043)
 ![Code: MIT](https://img.shields.io/badge/code-MIT-lightgrey)
 ![Text: CC BY 4.0](https://img.shields.io/badge/text-CC%20BY%204.0-lightgrey)
@@ -45,9 +45,9 @@ A pair with `a*b = 0` and a nonzero partner has infinite order on an explicit ve
 The symmetrised Tits form of the Cartan matrix carries the whole trichotomy: positive definite on
 the finite side for `a, b ≥ 1` — at `(a, b) = (0, 0)` the symmetriser `diag(b, a)` degenerates and
 the form is identically zero, although the product still has period `2` — nonnegative at
-`a*b = 4` and zero at `(a, 2)` there, so degenerate, and taking both signs above
-(`tits_positive_definite`, `tits_semidefinite_at_four`, `tits_vanishes_at_four`,
-`tits_indefinite_above_four`, `tits_negative_above_four`). These are statements about the
+`a*b = 4` with `(a, 2)` in the radical of the bilinear form, so genuinely degenerate there, and
+taking both signs above (`tits_positive_definite`, `tits_semidefinite_at_four`,
+`tits_radical_at_four`, `tits_degenerate_at_four`, `tits_indefinite_above_four`). These are statements about the
 reflection model; what they do and do not establish is set out in
 [`LIMITATIONS.md`](LIMITATIONS.md).
 
@@ -55,8 +55,8 @@ reflection model; what they do and do not establish is set out in
 | :--- | :-: | :--- |
 | [`RankTwoCertificate.lean`](RankTwoCertificate.lean) | 22 | Integral reflection certificates: exact periods, affine drift, the golden obstruction |
 | [`DihedralBridge.lean`](DihedralBridge.lean) | 22 | The isomorphism `(CoxeterMatrix.I m).Group ≃* DihedralGroup (m + 2)` |
-| [`RankTwoClassification.lean`](RankTwoClassification.lean) | 14 | The finite/affine boundary for every representative, and the three signs of the Tits form |
-| | **58** | |
+| [`RankTwoClassification.lean`](RankTwoClassification.lean) | 16 | The finite/affine boundary for every representative, and the full trichotomy of the Tits form |
+| | **60** | |
 
 The theorem is mathematically standard; the contribution is a checked formalization against
 Mathlib's actual `CoxeterMatrix.I` and `DihedralGroup`, a rank-two step toward a

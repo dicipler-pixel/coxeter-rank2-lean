@@ -14,13 +14,12 @@ Lean proves exactly the statements written, under exactly the hypotheses written
   established by case analysis, not a general theorem in `a` and `b`. The affine statements at
   `a*b = 4` **are** general in `(a, b)`: they follow from the characteristic-polynomial identity
   `step² = (a*b − 2) • step − 1`.
-* The sign of the symmetrised Tits form is now proved on all three sides: positive definite for
-  `1 ≤ a, b` with `a*b ≤ 3`, nonnegative at `a*b = 4` (`tits_semidefinite_at_four`) with a zero at
-  `(a, 2)` (`tits_vanishes_at_four`), hence degenerate there, and taking both signs above
-  (`tits_indefinite_above_four`). What is still not formalized is that `(a, 2)` spans the
-  *radical of the bilinear form* — it takes the value `a*y*(4 − a*b)`, a one-line computation this
-  release does not include — and the **converses**: that positive definiteness forces `a*b ≤ 3`,
-  and that semidefiniteness forces `a*b ≤ 4`.
+* The sign of the symmetrised Tits form is proved on all three sides: positive definite for
+  `1 ≤ a, b` with `a*b ≤ 3`, nonnegative at `a*b = 4` (`tits_semidefinite_at_four`) with `(a, 2)`
+  in the radical of the bilinear form (`tits_radical_at_four`), hence degenerate
+  (`tits_degenerate_at_four`), and taking both signs above (`tits_indefinite_above_four`). What is
+  still not formalized is the **converses**: that positive definiteness forces `a*b ≤ 3`, and that
+  semidefiniteness forces `a*b ≤ 4`.
 * The golden product is proved to equal `4cos²(π/5)`. That this number is the Cartan product of
   `I₂(5)`, and the full `H₂` geometry, are not formalized.
 * `product_lt_four_cases`, `finite_margin_positive` and `affine_margin_zero` are arithmetic
