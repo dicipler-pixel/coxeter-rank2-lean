@@ -1,6 +1,7 @@
 # Reviewer packet: twelve statements, checked against the literature
 
-For an algebraist who has not worked on this repository. Time: about 30–45 minutes. You are not
+For an algebraist who has not worked on this repository. Time: about 30–45 minutes for the twelve
+statements of the first campaign, 40–55 for all fourteen. You are not
 asked to read proofs or to know Lean. You are asked one thing: **does each statement say the
 standard mathematical fact its name and docstring claim, under the hypotheses written?**
 
@@ -49,6 +50,8 @@ The Lean statements are in `swarm/Statements.lean`; they are reproduced in plain
 | 10 | `tits_vanishes_at_four` | at `a·b = 4`: `titsForm a b a 2 = 0` | Kac Ch. 4; the rank-two trichotomy | Does the *name* promise more than the proposition (radical membership vs vanishing)? |
 | 11 | `tits_negative_above_four` | at `a·b > 4`: `titsForm a b a 2 < 0` | Kac Ch. 4 (indefinite type) | Same: negativity at one vector is not indefiniteness. Is that distinction drawn correctly where the repository claims it? |
 | 12 | `golden_product_eq_four_cos_sq` | `4cos²(π/5) = (3+√5)/2` | trigonometry; `H₂ = I₂(5)` | Is it acceptable to prove only the arithmetic and to say in `LIMITATIONS.md` that the `H₂` geometry is not formalized? |
+| 13 | `tits_semidefinite_at_four` | at `a·b = 4`: `0 ≤ titsForm a b x y` for all `x, y` | Kac Ch. 4 (affine type: psd of corank 1) | With `tits_vanishes_at_four` this makes the form degenerate. Is nonnegativity plus a zero the right way to say "degenerate", or should radical membership be proved separately? |
+| 14 | `tits_indefinite_above_four` | at `a·b > 4`: the form takes both signs | Kac Ch. 4 (indefinite type) | Is "both signs" the right definition of indefinite here, and does the pair of witnesses (`(1,0)` and `(a,2)`) carry it? |
 
 ## What to send back
 

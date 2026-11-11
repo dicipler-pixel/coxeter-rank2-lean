@@ -268,6 +268,26 @@ theorem zero_partner_no_positive_period (a : ℤ) (ha : a ≠ 0) (n : ℕ) (hn :
 theorem cartan_det (a b : ℤ) : (cartan a b).det = 4 - a * b := by
   simp [cartan, Matrix.det_fin_two]
 
+/-- Affine side, semidefinite: at `a*b = 4` the symmetrised form is nonnegative everywhere, which
+together with its vanishing at `(a, 2)` makes it degenerate there. -/
+theorem tits_semidefinite_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a * b = 4)
+    (x y : ℝ) : 0 ≤ titsForm (a : ℤ) (b : ℤ) x y := by
+  have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast hb
+  have habR : (a : ℝ) * (b : ℝ) = 4 := by
+    have h : ((a * b : ℕ) : ℝ) = ((4 : ℕ) : ℝ) := by rw [hab]
+    push_cast at h
+    linarith
+  have hsq : 2 * (b : ℝ) * titsForm (a : ℤ) (b : ℤ) x y
+      = (2 * (b : ℝ) * x - ((a : ℝ) * (b : ℝ)) * y) ^ 2
+        + ((a : ℝ) * (b : ℝ)) * (4 - (a : ℝ) * (b : ℝ)) * y ^ 2 := by
+    simp only [titsForm]; push_cast; ring
+  have key : 2 * (b : ℝ) * titsForm (a : ℤ) (b : ℤ) x y
+      = (2 * (b : ℝ) * x - 4 * y) ^ 2 := by
+    rw [hsq, habR]; ring
+  have h : 0 ≤ 2 * (b : ℝ) * titsForm (a : ℤ) (b : ℤ) x y := by
+    rw [key]; positivity
+  nlinarith
+
 theorem tits_vanishes_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a * b = 4) :
     titsForm (a : ℤ) (b : ℤ) (a : ℝ) 2 = 0 := by
   have key : titsForm (a : ℤ) (b : ℤ) (a : ℝ) 2
@@ -298,6 +318,16 @@ theorem tits_negative_above_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab 
     have h : ((4 : ℕ) : ℝ) < ((a * b : ℕ) : ℝ) := by exact_mod_cast hab
     push_cast at h
     linarith
+  nlinarith
+
+/-- Indefinite side: above the boundary the form takes both signs, so it is indefinite. -/
+theorem tits_indefinite_above_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : 4 < a * b) :
+    (∃ x y : ℝ, 0 < titsForm (a : ℤ) (b : ℤ) x y) ∧
+      ∃ x y : ℝ, titsForm (a : ℤ) (b : ℤ) x y < 0 := by
+  refine ⟨⟨1, 0, ?_⟩, ⟨(a : ℝ), 2, tits_negative_above_four a b ha hb hab⟩⟩
+  have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast hb
+  simp only [titsForm]
+  push_cast
   nlinarith
 
 theorem golden_product_eq_four_cos_sq :

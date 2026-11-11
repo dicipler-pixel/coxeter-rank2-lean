@@ -75,10 +75,12 @@ shows has infinite order.
   fetched and quoted: for `a, b > 0` with `ab ≥ 4`, "When ab = 4, A is positive semi-definite but
   not positive definite, and we call A affine. When ab > 4, A is neither positive semi-definite nor
   positive definite, but every proper generalized Cartan submatrix is positive definite."
-- **What that means here.** The literature asserts positive semidefiniteness at `ab = 4` and
-  indefiniteness above; the library proves positive definiteness for `ab ≤ 3` with `a, b ≥ 1`,
-  vanishing at `(a,2)` at `ab = 4`, and negativity there above. It does not prove psd, radical
-  membership, or indefiniteness — `LIMITATIONS.md` says so. The gap is a gap, correctly labelled.
+- **What that means here.** When the audit ran, the library proved positive definiteness for
+  `ab ≤ 3` with `a, b ≥ 1`, vanishing at `(a,2)` at `ab = 4`, and negativity there above — the
+  witness half of the trichotomy, with psd and indefiniteness disclaimed in `LIMITATIONS.md`. The
+  readers called that out as the gap worth closing, so it was closed: `tits_semidefinite_at_four`
+  and `tits_indefinite_above_four` were added afterwards (§5a), and the disclaimer in
+  `LIMITATIONS.md` was replaced by what is now proved and what still is not.
 
 ## 5. Verdicts
 
@@ -97,9 +99,27 @@ belongs:
 | 7 | `zero_product_no_positive_period` | 2 | matches | `b ≠ 0` necessary (`b = 0` is the negation, period 2); witness `(1,0)` necessary — `T²` fixes the line `x = 0`; the case is a negative control, not Coxeter data |
 | 8 | `zero_partner_no_positive_period` | 2 | matches | `a ≠ 0` exactly necessary; witness `(0,1)` exactly necessary — `(1,0)` is 2-periodic for every `a` |
 | 9 | `tits_positive_definite` | 2 | matches | hypotheses sharp; **excludes `(0,0)`**, where the form is identically zero — the README was wrong here |
-| 10 | `tits_vanishes_at_four` | 2 | weaker than the standard fact | proves isotropy at `(a,2)`; the *raw* form vanishes there too, so it does not distinguish the symmetrisation |
-| 11 | `tits_negative_above_four` | 2 | weaker than the standard fact | one negative value, not indefiniteness — though `Q(1,0) = 2b > 0` makes that one line away |
+| 10 | `tits_vanishes_at_four` | 2 | weaker than the standard fact | proves isotropy at `(a,2)`; the *raw* form vanishes there too, so it does not distinguish the symmetrisation. Closed afterwards by `tits_semidefinite_at_four` (§5a) |
+| 11 | `tits_negative_above_four` | 2 | weaker than the standard fact | one negative value, not indefiniteness. Closed afterwards by `tits_indefinite_above_four` (§5a) |
 | 12 | `golden_product_eq_four_cos_sq` | 2 | matches | arithmetic only; the `H₂` identification is context, and `LIMITATIONS.md` says so |
+
+## 5a. Closing the gap the readers flagged
+
+Two statements were added after the audit, and they are the only claims in the library with **no
+independent reading at all** — they were written and proved by the coordinator, gated by
+`scripts/gate.py` (parity, compile, kernel replay, axioms, false controls) and confirmed by CI, but
+no reader has yet judged whether they say what they are named. That is the same position statements
+1–3 were in before pass 1, and it is recorded rather than glossed.
+
+| Statement | What it says | Why it was added |
+|---|---|---|
+| `tits_semidefinite_at_four` | at `a*b = 4`, `0 ≤ titsForm a b x y` for all `x, y` — with `tits_vanishes_at_four` this makes the form degenerate | the affine side of the trichotomy was a witness (`Q(a,2) = 0`) rather than a sign |
+| `tits_indefinite_above_four` | above `a*b = 4` the form takes both signs, ∃ a positive and ∃ a negative value | indefiniteness was one negative value and an unstated `Q(1,0) = 2b > 0` |
+
+Both are one or two lines from what was already there: `2b·Q = (2bx − ab y)² + ab(4−ab)y²` gives
+nonnegativity at `ab = 4`, and `Q(1,0) = 2b` supplies the positive value. `LIMITATIONS.md` now
+states the two things still unproved — that `(a,2)` spans the radical of the bilinear form, and the
+converses (positive definiteness forces `ab ≤ 3`, semidefiniteness forces `ab ≤ 4`).
 
 ## 6. What the audit changed in the repository
 

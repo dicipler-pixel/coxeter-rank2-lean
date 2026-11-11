@@ -20,8 +20,9 @@ What each target closes:
   the identity (`HasExactPeriod` is not claimed, and would be the wrong form here):
   `4 - a*b` alone does not decide finiteness of the product;
 * **T5** the sign of the Tits form — positive definite for `1 ≤ a, b` with `a*b ≤ 3` (at
-  `(0, 0)` the symmetriser degenerates and the form is identically zero), vanishing at `(a, 2)`
-  when `a*b = 4`, negative at that vector above — see the Tits bullet in `LIMITATIONS.md`;
+  `(0, 0)` the symmetriser degenerates and the form is identically zero), nonnegative at
+  `a*b = 4` with a zero at `(a, 2)` there (so degenerate), and taking both signs above — see the
+  Tits bullet in `LIMITATIONS.md`;
 * **T6** `4cos²(π/5) = (3+√5)/2`, the identification the golden paragraph only half makes.
 -/
 
@@ -87,6 +88,12 @@ theorem tits_positive_definite (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : 
     (x y : ℝ) (h : (x, y) ≠ 0) : 0 < titsForm (a : ℤ) (b : ℤ) x y := by
   sorry
 
+/-- Affine side, semidefinite: at `a*b = 4` the symmetrised form is nonnegative everywhere, which
+together with its vanishing at `(a, 2)` makes it degenerate there. -/
+theorem tits_semidefinite_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a * b = 4)
+    (x y : ℝ) : 0 ≤ titsForm (a : ℤ) (b : ℤ) x y := by
+  sorry
+
 /-- Affine side: `titsForm a b a 2 = -2 a (a*b - 4)`, so `(a, 2)` is a zero of the form at
 `a*b = 4`. Radical membership is true but is not what this proves; see `Targets.titsForm`. -/
 theorem tits_vanishes_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a * b = 4) :
@@ -96,6 +103,12 @@ theorem tits_vanishes_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a
 /-- Indefinite side: the same vector makes the form negative once `a*b > 4`. -/
 theorem tits_negative_above_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : 4 < a * b) :
     titsForm (a : ℤ) (b : ℤ) (a : ℝ) 2 < 0 := by
+  sorry
+
+/-- Indefinite side: above the boundary the form takes both signs, so it is indefinite. -/
+theorem tits_indefinite_above_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : 4 < a * b) :
+    (∃ x y : ℝ, 0 < titsForm (a : ℤ) (b : ℤ) x y) ∧
+      ∃ x y : ℝ, titsForm (a : ℤ) (b : ℤ) x y < 0 := by
   sorry
 
 /-! ## T6 — the golden product -/
