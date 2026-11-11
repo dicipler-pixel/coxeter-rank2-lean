@@ -42,10 +42,12 @@ type prescribes (`finite_exact_period`), and every pair with `a*b = 4` is unipot
 drift and no positive period (`affine_unipotent`, `affine_iterate`, `affine_no_positive_period`).
 A pair with `a*b = 0` and a nonzero partner has infinite order on an explicit vector
 (`zero_product_no_positive_period`) — so `4 − a*b > 0` alone does not make the product finite.
-The symmetrised Tits form of the Cartan matrix is positive definite on the finite side, vanishes
-at `(a, 2)` at `a*b = 4`, and is negative there above (`tits_positive_definite`,
-`tits_vanishes_at_four`, `tits_negative_above_four`). These are statements about the reflection
-model; what they do and do not establish is set out in [`LIMITATIONS.md`](LIMITATIONS.md).
+The symmetrised Tits form of the Cartan matrix is positive definite on the finite side for
+`a, b ≥ 1` — at `(a, b) = (0, 0)` the symmetriser `diag(b, a)` degenerates and the form is
+identically zero, although the product still has period `2` — it vanishes at `(a, 2)` at
+`a*b = 4`, and is negative there above (`tits_positive_definite`, `tits_vanishes_at_four`,
+`tits_negative_above_four`). These are statements about the reflection model; what they do and do
+not establish is set out in [`LIMITATIONS.md`](LIMITATIONS.md).
 
 | File | Theorems | What it does |
 | :--- | :-: | :--- |

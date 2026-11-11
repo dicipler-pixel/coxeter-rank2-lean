@@ -15,7 +15,12 @@ namespace OperatorFirst.CoxeterRankTwo
 
 /-- The rank-two Cartan matrix with off-diagonal magnitudes `a`, `b`. It is a generalised
 Cartan matrix in Kac's sense (`a_ij ≤ 0` for `i ≠ j`, and `a_ij = 0 ⟺ a_ji = 0`) only when
-`a, b ≥ 0` and `a = 0 ⟺ b = 0`; the determinant identity below holds for all `a, b : ℤ`. -/
+`a, b ≥ 0` and `a = 0 ⟺ b = 0`; the determinant identity below holds for all `a, b : ℤ`.
+
+One convention to keep straight: the reflection pair of `RankTwoCertificate` (`s1 a`, `s2 b`)
+satisfies `s_i(α_j) = α_j - a_{ji} α_i` for the matrix `cartan b a`, i.e. the transpose of the
+matrix named here. Nothing below is affected — every statement depends on `a*b` alone, and
+`titsForm a b x y = titsForm b a y x` — but the two writings should not be confused. -/
 def cartan (a b : ℤ) : Matrix (Fin 2) (Fin 2) ℤ := !![2, -a; -b, 2]
 
 /-- The symmetrised Tits form of `cartan a b`, symmetriser `diag b a`. What the targets prove is

@@ -19,8 +19,9 @@ What each target closes:
 * **T4** the degenerate product `a*b = 0` with a nonzero partner has no positive power equal to
   the identity (`HasExactPeriod` is not claimed, and would be the wrong form here):
   `4 - a*b` alone does not decide finiteness of the product;
-* **T5** the sign of the Tits form — positive definite on the finite side, degenerate at
-  `a*b = 4`, negative somewhere above it — see the Tits bullet in `LIMITATIONS.md`;
+* **T5** the sign of the Tits form — positive definite for `1 ≤ a, b` with `a*b ≤ 3` (at
+  `(0, 0)` the symmetriser degenerates and the form is identically zero), vanishing at `(a, 2)`
+  when `a*b = 4`, negative at that vector above — see the Tits bullet in `LIMITATIONS.md`;
 * **T6** `4cos²(π/5) = (3+√5)/2`, the identification the golden paragraph only half makes.
 -/
 
@@ -63,7 +64,8 @@ theorem affine_no_positive_period (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab
 
 /-! ## T4 — degenerate product `a*b = 0` with a nonzero partner -/
 
-/-- With `a = 0`, the Coxeter step is `(x, y) ↦ (-x, b*x - y)`, whose square is a shear. -/
+/-- With `a = 0`, the Coxeter step is `(x, y) ↦ (-x, b*x - y)`. For `b ≠ 0` its square is a
+nonzero shear; at `b = 0` the step is the negation and the square is the identity. -/
 theorem zero_product_iterate (b : ℤ) (n : ℕ) (x y : ℤ) :
     iter (step 0 b) (2 * n) (x, y) = (x, y - 2 * (n : ℤ) * b * x) := by
   sorry
