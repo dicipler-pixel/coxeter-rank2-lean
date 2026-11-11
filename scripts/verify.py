@@ -79,9 +79,37 @@ def theorems_in(path: pathlib.Path) -> list[str]:
     return [f"{spaces[0]}.{name}" for name in THEOREM_RE.findall(text)]
 
 
+LAKEFILE = ROOT / "lakefile.toml"
+DEFINITION_MODULES = set(CONFIG.get("definition_modules", []))
+
+
+def lake_roots() -> list[str]:
+    """The modules Lake actually builds, read from the lakefile."""
+    text = LAKEFILE.read_text() if LAKEFILE.exists() else ""
+    found = re.findall(r"roots\s*=\s*\[([^\]]*)\]", text, re.S)
+    return re.findall(r'"([^"]+)"', found[0]) if found else []
+
+
+def check_every_built_module_is_accounted_for() -> None:
+    """A module that Lake builds but this file never audits is a silent gap.
+
+    Every root must either be in the theorem inventory (and so be counted, hashed and
+    axiom-audited) or be named in `definition_modules` as carrying no theorems. Adding a
+    Lean file and forgetting the inventory then fails here rather than passing quietly.
+    """
+    listed = {module for module, _ in MODULES} | DEFINITION_MODULES
+    missing = [name for name in lake_roots() if name not in listed]
+    if missing:
+        raise SystemExit(
+            f"lakefile builds {missing}, which is neither in `modules` nor in "
+            f"`definition_modules` of scripts/config.json: it would be built and never audited")
+
+
 def main() -> int:
     OUT.mkdir(exist_ok=True)
-    report: dict = {"lean": run(["lean", "--version"]).stdout.strip(), "modules": {}}
+    check_every_built_module_is_accounted_for()
+    report: dict = {"lean": run(["lean", "--version"]).stdout.strip(), "modules": {},
+                   "lake_roots": lake_roots(), "definition_modules": sorted(DEFINITION_MODULES)}
 
     # Inventory and hashes.
     names: list[str] = []

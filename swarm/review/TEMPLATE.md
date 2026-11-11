@@ -29,6 +29,8 @@ what your verdict covers.
 | 14 | `tits_indefinite_above_four` | | | |
 | 15 | `tits_radical_at_four` | | | |
 | 16 | `tits_degenerate_at_four` | | | |
+| 17 | `tits_posDef_iff_le_three` | | | |
+| 18 | `tits_semidef_iff_le_four` | | | |
 
 ## Anything true but not what it says
 

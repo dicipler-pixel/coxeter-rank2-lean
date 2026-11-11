@@ -1,7 +1,7 @@
 # Reviewer packet: twelve statements, checked against the literature
 
 For an algebraist who has not worked on this repository. Time: about 30–45 minutes for the twelve
-statements of the first campaign, 45–60 for all sixteen. You are not
+statements of the first campaign, 50–70 for all eighteen. You are not
 asked to read proofs or to know Lean. You are asked one thing: **does each statement say the
 standard mathematical fact its name and docstring claim, under the hypotheses written?**
 
@@ -55,6 +55,8 @@ The Lean statements are in `swarm/Statements.lean`; they are reproduced in plain
 | 14 | `tits_indefinite_above_four` | at `a·b > 4`: the form takes both signs | Kac Ch. 4 (indefinite type) | Is "both signs" the right definition of indefinite here, and does the pair of witnesses (`(1,0)` and `(a,2)`) carry it? |
 | 15 | `tits_radical_at_four` | at `a·b = 4`: `B((a,2), w) = 0` for every `w` | Kac Ch. 4 (affine: radical of corank 1) | Is `B` here the polar form of the Tits form, and is `(a,2)` the right radical vector, or should it be normalised? |
 | 16 | `tits_degenerate_at_four` | at `a·b = 4`: `∃ v ≠ 0, ∀ w, B v w = 0` | Kac Ch. 4 | Is this the standard statement that the form is degenerate, and does it need corank exactly 1 stated separately? |
+| 17 | `tits_posDef_iff_le_three` | the form is positive off the origin iff `a·b ≤ 3` | Kac Ch. 4, the principal-minor criterion | This is the converse that makes the criterion an iff. Does proving it from the two excluded cases (`a·b = 4` and above) carry the same content as Kac's principal-minor argument? |
+| 18 | `tits_semidef_iff_le_four` | the form is nonnegative everywhere iff `a·b ≤ 4` | Kac Ch. 4 | Same question for the affine bound. |
 
 ## What to send back
 

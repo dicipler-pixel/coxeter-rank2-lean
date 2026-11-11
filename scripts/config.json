@@ -13,11 +13,14 @@
    "path": "RankTwoClassification.lean"
   }
  ],
- "expected_theorems": 60,
+ "expected_theorems": 62,
  "expected_false_controls": 1,
  "root_imports": [
   "RankTwoCertificate",
   "DihedralBridge",
   "RankTwoClassification"
+ ],
+ "definition_modules": [
+  "RankTwoTargets"
  ]
 }

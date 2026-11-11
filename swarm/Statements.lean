@@ -22,7 +22,8 @@ What each target closes:
 * **T5** the sign of the Tits form — positive definite for `1 ≤ a, b` with `a*b ≤ 3` (at
   `(0, 0)` the symmetriser degenerates and the form is identically zero), nonnegative at
   `a*b = 4` with `(a, 2)` in the radical of the bilinear form (so degenerate), and taking both
-  signs above — see the Tits bullet in `LIMITATIONS.md`;
+  signs above — and the converses hold, so the trichotomy is an if-and-only-if — see the Tits
+  bullet in `LIMITATIONS.md`;
 * **T6** `4cos²(π/5) = (3+√5)/2`, the identification the golden paragraph only half makes.
 -/
 
@@ -113,6 +114,16 @@ theorem tits_radical_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a 
 /-- Affine side, the standard statement: the bilinear form is degenerate at `a*b = 4`. -/
 theorem tits_degenerate_at_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : a * b = 4) :
     ∃ v : ℝ × ℝ, v ≠ 0 ∧ ∀ w : ℝ × ℝ, titsBilin (a : ℤ) (b : ℤ) v w = 0 := by
+  sorry
+
+/-- The finite side is exactly positive definiteness, not merely implied by it. -/
+theorem tits_posDef_iff_le_three (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) :
+    (∀ x y : ℝ, (x, y) ≠ 0 → 0 < titsForm (a : ℤ) (b : ℤ) x y) ↔ a * b ≤ 3 := by
+  sorry
+
+/-- The affine side is exactly nonnegativity: semidefinite if and only if `a*b ≤ 4`. -/
+theorem tits_semidef_iff_le_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) :
+    (∀ x y : ℝ, 0 ≤ titsForm (a : ℤ) (b : ℤ) x y) ↔ a * b ≤ 4 := by
   sorry
 
 /-- Indefinite side: above the boundary the form takes both signs, so it is indefinite. -/

@@ -341,6 +341,62 @@ theorem tits_indefinite_above_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) (ha
   push_cast
   nlinarith
 
+/-- The witness `(a, 2)` is not the origin, which is what makes it usable as a test vector. -/
+lemma pair_a_two_ne_zero (a : ℕ) (ha : 1 ≤ a) : (((a : ℝ)), (2 : ℝ)) ≠ (0, 0) := by
+  intro h
+  have ha0 : (a : ℝ) = 0 := by simpa using congrArg Prod.fst h
+  have haR : (0 : ℝ) < (a : ℝ) := by
+    have : (0 : ℕ) < a := by omega
+    exact_mod_cast this
+  linarith
+
+/-- The converse of positive definiteness: if the form is positive off the origin then `a*b ≤ 3`.
+Both excluded cases are already proved — at `a*b = 4` the witness `(a, 2)` is a zero, above it a
+negative value. -/
+lemma tits_posDef_imp_le_three (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b)
+    (h : ∀ x y : ℝ, (x, y) ≠ 0 → 0 < titsForm (a : ℤ) (b : ℤ) x y) : a * b ≤ 3 := by
+  by_contra hcon
+  have h4 : 4 ≤ a * b := by omega
+  rcases Nat.lt_or_eq_of_le h4 with hlt | heq
+  · have hneg := tits_negative_above_four a b ha hb hlt
+    have hpos := h (a : ℝ) 2 (pair_a_two_ne_zero a ha)
+    linarith
+  · have hzero := tits_vanishes_at_four a b ha hb heq.symm
+    have hpos := h (a : ℝ) 2 (pair_a_two_ne_zero a ha)
+    linarith
+
+/-- The converse of semidefiniteness: if the form is nonnegative everywhere then `a*b ≤ 4`. -/
+lemma tits_semidef_imp_le_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b)
+    (h : ∀ x y : ℝ, 0 ≤ titsForm (a : ℤ) (b : ℤ) x y) : a * b ≤ 4 := by
+  by_contra hcon
+  have hlt : 4 < a * b := by omega
+  have hneg := tits_negative_above_four a b ha hb hlt
+  have hnn := h (a : ℝ) 2
+  linarith
+
+/-- The finite side is exactly positive definiteness: the form is positive off the origin if and
+only if `a*b ≤ 3`. -/
+theorem tits_posDef_iff_le_three (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) :
+    (∀ x y : ℝ, (x, y) ≠ 0 → 0 < titsForm (a : ℤ) (b : ℤ) x y) ↔ a * b ≤ 3 :=
+  ⟨tits_posDef_imp_le_three a b ha hb, fun h x y hxy =>
+    tits_positive_definite a b ha hb h x y hxy⟩
+
+/-- The affine side is exactly nonnegativity: the form is nonnegative everywhere if and only if
+`a*b ≤ 4`. -/
+theorem tits_semidef_iff_le_four (a b : ℕ) (ha : 1 ≤ a) (hb : 1 ≤ b) :
+    (∀ x y : ℝ, 0 ≤ titsForm (a : ℤ) (b : ℤ) x y) ↔ a * b ≤ 4 := by
+  refine ⟨tits_semidef_imp_le_four a b ha hb, ?_⟩
+  intro h x y
+  rcases Nat.lt_or_eq_of_le h with hlt | heq
+  · have h3 : a * b ≤ 3 := by omega
+    rcases eq_or_ne (x, y) (0, 0) with hzero | hne
+    · have hx : x = 0 := by simpa using congrArg Prod.fst hzero
+      have hy : y = 0 := by simpa using congrArg Prod.snd hzero
+      subst hx; subst hy
+      simp [titsForm]
+    · exact le_of_lt (tits_positive_definite a b ha hb h3 x y hne)
+  · exact tits_semidefinite_at_four a b ha hb heq x y
+
 theorem golden_product_eq_four_cos_sq :
     4 * Real.cos (Real.pi / 5) ^ 2 = (3 + Real.sqrt 5) / 2 := by
   rw [Real.cos_pi_div_five]

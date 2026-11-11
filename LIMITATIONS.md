@@ -17,9 +17,10 @@ Lean proves exactly the statements written, under exactly the hypotheses written
 * The sign of the symmetrised Tits form is proved on all three sides: positive definite for
   `1 ≤ a, b` with `a*b ≤ 3`, nonnegative at `a*b = 4` (`tits_semidefinite_at_four`) with `(a, 2)`
   in the radical of the bilinear form (`tits_radical_at_four`), hence degenerate
-  (`tits_degenerate_at_four`), and taking both signs above (`tits_indefinite_above_four`). What is
-  still not formalized is the **converses**: that positive definiteness forces `a*b ≤ 3`, and that
-  semidefiniteness forces `a*b ≤ 4`.
+  (`tits_degenerate_at_four`), and taking both signs above (`tits_indefinite_above_four`). The
+  converses are proved too (`tits_posDef_iff_le_three`, `tits_semidef_iff_le_four`), so for
+  `1 ≤ a, b` the trichotomy is an if-and-only-if: positive definite exactly when `a*b ≤ 3`,
+  semidefinite exactly when `a*b ≤ 4`, neither above.
 * The golden product is proved to equal `4cos²(π/5)`. That this number is the Cartan product of
   `I₂(5)`, and the full `H₂` geometry, are not formalized.
 * `product_lt_four_cases`, `finite_margin_positive` and `affine_margin_zero` are arithmetic
